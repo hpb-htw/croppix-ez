@@ -1,9 +1,6 @@
-var document;
+import {document} from './document.js';
 
-document = require('./document');
-
-window = {
+export const window = {
 	document : document
 };
 
-module.exports = window;

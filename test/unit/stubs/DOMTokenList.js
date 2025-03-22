@@ -1,4 +1,4 @@
-DOMTokenList = function DOMTokenList() {
+export const DOMTokenList = function DOMTokenList() {
 	this.add = function () {
 	};
 	this.remove = function () {
@@ -10,5 +10,3 @@ DOMTokenList = function DOMTokenList() {
 	this.contains = function () {
 	};
 };
-
-module.exports = DOMTokenList;

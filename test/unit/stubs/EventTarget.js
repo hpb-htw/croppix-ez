@@ -1,4 +1,4 @@
-EventTarget = function EventTarget() {
+export const EventTarget = function EventTarget() {
 	this.addEventListener = function () {
 	};
 	this.removeEventListener = function () {
@@ -6,5 +6,3 @@ EventTarget = function EventTarget() {
 	this.dispatchEvent = function () {
 	};
 };
-
-module.exports = EventTarget;

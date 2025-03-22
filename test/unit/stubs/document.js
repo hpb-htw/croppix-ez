@@ -1,11 +1,8 @@
-var HTMLElement;
+import {HTMLElement} from './HTMLElement.js';
 
-HTMLElement = require('./HTMLElement');
-
-document = {
+export const document = {
 	createElement : function () {
 		return new HTMLElement();
 	}
 };
 
-module.exports = document;

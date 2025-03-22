@@ -1,15 +1,20 @@
-var assert, Croppie;
+//let assert, Croppie;
 
-assert = require('assert');
+import assert from 'node:assert/strict';
+import {Croppie} from '../../croppie-es6.js';
 
-require('./stubs/window');
-Croppie = require('../../croppie');
+import {window} from "./stubs/window.js";
+const HTMLElement = window.document.createElement;
+
+const document = window.document;
+global.document = document
 
 describe('Croppie', function () {
-	var testCroppieObject, stubElement;
+	let testCroppieObject, stubElement;
 
 	beforeEach(function () {
 		stubElement = new HTMLElement();
+		stubElement.tagName = "IMG";
 		testCroppieObject = new Croppie(stubElement);
 	});
 
@@ -25,9 +30,7 @@ describe('Croppie', function () {
 				Object
 					.keys(expectedOptionGroup)
 					.forEach(function (optionName) {
-						var currentPath;
-
-						currentPath = [
+						const currentPath = [
 							path,
 							optionName
 						].join('.');

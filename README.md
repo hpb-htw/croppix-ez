@@ -1,5 +1,6 @@
 # Croppie - A Javascript Image Cropper
 
+(port to ES6 Module by Hong-Phuc Bui)
 
 ## To Install
 Bower: `bower install croppie`
@@ -7,12 +8,14 @@ Bower: `bower install croppie`
 Npm: `npm install croppie`
 
 Download:
-[croppie.js](croppie.js) & [croppie.css](croppie.css)
+[croppie.js](origin/croppie.js) & [croppie.css](croppie.css)
 
 ## Adding croppie to your site
+
 ```html
-<link rel="stylesheet" href="croppie.css" />
-<script src="croppie.js"></script>
+
+<link rel="stylesheet" href="croppie.css"/>
+<script src="origin/croppie.js"></script>
 ```
 
 ## CDN

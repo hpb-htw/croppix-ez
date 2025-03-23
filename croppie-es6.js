@@ -345,7 +345,7 @@ export class Croppie {
     }
 
     _updateCenterPoint(rotate) {
-        var scale = this._currentZoom,
+        const scale = this._currentZoom,
             data = this.elements.preview.getBoundingClientRect(),
             vpData = this.elements.viewport.getBoundingClientRect(),
             transform = Transform.parse(this.elements.preview.style[CSS_TRANSFORM]),
@@ -385,7 +385,7 @@ export class Croppie {
 
 
     _initDraggable() {
-        var isDragging = false,
+        let isDragging = false,
             originalX,
             originalY,
             originalDistance,
@@ -436,7 +436,7 @@ export class Croppie {
             }
 
             if (ev.shiftKey && (ev.keyCode === UP_ARROW || ev.keyCode === DOWN_ARROW)) {
-                var zoom;
+                let zoom;
                 if (ev.keyCode === UP_ARROW) {
                     zoom = parseFloat(this.elements.zoomer.value) + parseFloat(this.elements.zoomer.step)
                 }
@@ -447,7 +447,7 @@ export class Croppie {
             }
             else if (this.options.enableKeyMovement && (ev.keyCode >= 37 && ev.keyCode <= 40)) {
                 ev.preventDefault();
-                var movement = parseKeyDown(ev.keyCode);
+                const movement = parseKeyDown(ev.keyCode);
 
                 transform = Transform.parse(this.elements.preview);
                 document.body.style[CSS_USERSELECT] = 'none';
@@ -457,7 +457,7 @@ export class Croppie {
         }
 
         const keyMove = (movement) => {
-            var deltaX = movement[0],
+            const deltaX = movement[0],
                 deltaY = movement[1],
                 newCss = {};
 
@@ -498,7 +498,7 @@ export class Croppie {
 
         const mouseMove = (ev) => {
             ev.preventDefault();
-            var pageX = ev.pageX,
+            let pageX = ev.pageX,
                 pageY = ev.pageY;
 
             if (ev.touches) {
@@ -507,21 +507,21 @@ export class Croppie {
                 pageY = touches.pageY;
             }
 
-            var deltaX = pageX - originalX,
+            const deltaX = pageX - originalX,
                 deltaY = pageY - originalY,
                 newCss = {};
 
             if (ev.type === 'touchmove') {
                 if (ev.touches.length > 1) {
-                    var touch1 = ev.touches[0];
-                    var touch2 = ev.touches[1];
-                    var dist = Math.sqrt((touch1.pageX - touch2.pageX) * (touch1.pageX - touch2.pageX) + (touch1.pageY - touch2.pageY) * (touch1.pageY - touch2.pageY));
+                    const touch1 = ev.touches[0];
+                    const touch2 = ev.touches[1];
+                    const dist = Math.sqrt((touch1.pageX - touch2.pageX) * (touch1.pageX - touch2.pageX) + (touch1.pageY - touch2.pageY) * (touch1.pageY - touch2.pageY));
 
                     if (!originalDistance) {
                         originalDistance = dist / this._currentZoom;
                     }
 
-                    var scale = dist / originalDistance;
+                    const scale = dist / originalDistance;
 
                     this._setZoomerVal(scale);
                     dispatchChange(this.elements.zoomer);
@@ -570,7 +570,7 @@ export class Croppie {
     }
 
     _triggerUpdate() {
-        var data = this.get();
+        const data = this.get();
 
         if (!this._isVisible()) {
             return;
@@ -677,7 +677,7 @@ export class Croppie {
         }
 
         const scroll = (ev) => {
-            var delta, targetZoom;
+            let delta, targetZoom;
 
             if(this.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey !== true){
                 return 0;
@@ -695,7 +695,7 @@ export class Croppie {
 
             ev.preventDefault();
             this._setZoomerVal(targetZoom);
-            change.call(this);
+            change();
         }
 
         this.elements.zoomer.addEventListener('input', change);// this is being fired twice on keypress
@@ -799,16 +799,16 @@ export class Croppie {
     }
 
     _initializeResize () {
-        var wrap = document.createElement('div');
-        var isDragging = false;
-        var direction;
-        var originalX;
-        var originalY;
-        var minSize = 50;
-        var maxWidth;
-        var maxHeight;
-        var vr;
-        var hr;
+        const wrap = document.createElement('div');
+        let isDragging = false;
+        let direction;
+        let originalX;
+        let originalY;
+        let minSize = 50;
+        let maxWidth;
+        let maxHeight;
+        let vr;
+        let hr;
 
         wrap.classList.add('cr-resizer');//addClass(wrap, 'cr-resizer');
         css(wrap, {
@@ -836,7 +836,7 @@ export class Croppie {
                 return;
             }
 
-            var overlayRect = this.elements.overlay.getBoundingClientRect();
+            const overlayRect = this.elements.overlay.getBoundingClientRect();
 
             isDragging = true;
             originalX = ev.pageX;
@@ -846,7 +846,7 @@ export class Croppie {
             maxHeight = overlayRect.height;
 
             if (ev.touches) {
-                var touches = ev.touches[0];
+                const touches = ev.touches[0];
                 originalX = touches.pageX;
                 originalY = touches.pageY;
             }
@@ -1117,27 +1117,23 @@ export class Croppie {
     }
 
     _updateZoomLimits (initial) {
-        var minZoom = Math.max(this.options.minZoom, 0) || 0,
-            maxZoom = this.options.maxZoom || 1.5,
-            initialZoom,
-            defaultInitialZoom,
-            zoomer = this.elements.zoomer,
-            scale = parseFloat(zoomer.value),
-            boundaryData = this.elements.boundary.getBoundingClientRect(),
-            imgData = naturalImageDimensions(this.elements.img, this.data.orientation),
-            vpData = this.elements.viewport.getBoundingClientRect(),
-            minW,
-            minH;
+        const imgData = naturalImageDimensions(this.elements.img, this.data.orientation),
+              vpData = this.elements.viewport.getBoundingClientRect();
+
+        let minZoom = Math.max(this.options.minZoom, 0) || 0;
         if (this.options.enforceBoundary) {
-            minW = vpData.width / imgData.width;
-            minH = vpData.height / imgData.height;
+            const minW = vpData.width / imgData.width;
+            const minH = vpData.height / imgData.height;
             minZoom = Math.max(minW, minH);
         }
 
+        let maxZoom = this.options.maxZoom || 1.5;
         if (minZoom >= maxZoom) {
             maxZoom = minZoom + 1;
         }
 
+        const zoomer = this.elements.zoomer;
+        const scale = parseFloat(zoomer.value);
         zoomer.min = fix(minZoom, 4);
         zoomer.max = fix(maxZoom, 4);
 
@@ -1145,8 +1141,9 @@ export class Croppie {
             this._setZoomerVal(scale < zoomer.min ? zoomer.min : zoomer.max);
         }
         else if (initial) {
-            defaultInitialZoom = Math.max((boundaryData.width / imgData.width), (boundaryData.height / imgData.height));
-            initialZoom = this.data.boundZoom !== null ? this.data.boundZoom : defaultInitialZoom;
+            const boundaryData = this.elements.boundary.getBoundingClientRect();
+            let defaultInitialZoom = Math.max((boundaryData.width / imgData.width), (boundaryData.height / imgData.height));
+            let initialZoom = this.data.boundZoom !== null ? this.data.boundZoom : defaultInitialZoom;
             this._setZoomerVal(initialZoom);
         }
 

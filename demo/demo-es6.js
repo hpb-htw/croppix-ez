@@ -306,9 +306,9 @@ const Demo = (function () {
     }
 
     function init() {
-        //bindNavigation();
-        //demoMain();
-        //demoBasic();
+        bindNavigation();
+        demoMain();
+        demoBasic();
         demoVanilla();
         demoResizer();
         //demoUpload();

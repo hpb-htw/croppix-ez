@@ -88,11 +88,6 @@ export class Transform {
 
     set x(value) {
         this.#x = value;
-        try {
-            throw new Error("Set Transform.x outside of Transform");
-        }catch (e) {
-            console.error(e)
-        }
     }
 
     get y() {
@@ -101,11 +96,6 @@ export class Transform {
 
     set y(value) {
         this.#y = value;
-        try {
-            throw new Error("Set Transform.y outside of Transform");
-        }catch (e) {
-            console.error(e)
-        }
     }
 
     get scale() {
@@ -114,11 +104,6 @@ export class Transform {
 
     set scale(value) {
         this.#scale = value;
-        try {
-            throw new Error("Set Transform.scale outside of Transform");
-        }catch (e) {
-            console.error(e)
-        }
     }
 
     static parse (v) {

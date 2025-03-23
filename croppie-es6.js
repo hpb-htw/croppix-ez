@@ -10,7 +10,14 @@
  *************************/
 
 import {css, setAttributes} from "./vanilla-css.js";
-import {CSS_TRANS_ORG, CSS_TRANSFORM, TransformOrigin, Transform, CSS_USERSELECT} from "./css-transform.js";
+import {
+    CSS_TRANS_ORG,
+    CSS_TRANSFORM,
+    TransformOrigin,
+    Transform,
+    CSS_USERSELECT,
+    getExifOffset
+} from "./css-transform.js";
 import {debounce, dispatchChange} from "./debounce.js";
 import {drawCanvas, fix, getExifOrientation, loadImage, naturalImageDimensions, num} from "./dyn-image.js";
 import {clone, deepExtend} from "./clone.js";
@@ -73,7 +80,7 @@ export class Croppie {
      * @return Promise
      * */
     bind(options, cb = undefined) {
-        var url,
+        let url,
             points = [],
             zoom = null,
             hasExif = this._hasExif();
@@ -104,11 +111,11 @@ export class Croppie {
             console.warn("Rewrite loadImage function to use async/await")
             this._replaceImage(img);
             if (!points.length) {
-                var natDim = naturalImageDimensions(img);
-                var rect = this.elements.viewport.getBoundingClientRect();
-                var aspectRatio = rect.width / rect.height;
-                var imgAspectRatio = natDim.width / natDim.height;
-                var width, height;
+                const natDim = naturalImageDimensions(img);
+                const rect = this.elements.viewport.getBoundingClientRect();
+                const aspectRatio = rect.width / rect.height;
+                const imgAspectRatio = natDim.width / natDim.height;
+                let width, height;
 
                 if (imgAspectRatio > aspectRatio) {
                     height = natDim.height;
@@ -119,10 +126,10 @@ export class Croppie {
                     height = natDim.height / aspectRatio;
                 }
 
-                var x0 = (natDim.width - width) / 2;
-                var y0 = (natDim.height - height) / 2;
-                var x1 = x0 + width;
-                var y1 = y0 + height;
+                const x0 = (natDim.width - width) / 2;
+                const y0 = (natDim.height - height) / 2;
+                const x1 = x0 + width;
+                const y1 = y0 + height;
                 this.data.points = [x0, y0, x1, y1];
             }
             else if (this.options.relative) {
@@ -187,17 +194,12 @@ export class Croppie {
      * @return Promise
      * */
     result(options) {
-        var data = this._get(),
-            opts = deepExtend(clone(RESULT_DEFAULTS), clone(options)),
-            resultType = (typeof (options) === 'string' ? options : (opts.type || 'base64')),
-            size = opts.size || 'viewport',
-            format = opts.format,
-            quality = opts.quality,
-            backgroundColor = opts.backgroundColor,
-            circle = typeof opts.circle === 'boolean' ? opts.circle : (this.options.viewport.type === 'circle'),
-            vpRect = this.elements.viewport.getBoundingClientRect(),
-            ratio = vpRect.width / vpRect.height;
+        const opts = deepExtend(clone(RESULT_DEFAULTS), clone(options));
+        const vpRect = this.elements.viewport.getBoundingClientRect();
+        const ratio = vpRect.width / vpRect.height;
 
+        const data = this._get();
+        let size = opts.size || 'viewport';
         if (size === 'viewport') {
             data.outputWidth = vpRect.width;
             data.outputHeight = vpRect.height;
@@ -214,16 +216,23 @@ export class Croppie {
             }
         }
 
+        const format = opts.format;
+        const quality = opts.quality;
         if (RESULT_FORMATS.indexOf(format) > -1) {
             data.format = 'image/' + format;
             data.quality = quality;
         }
 
-        data.circle = circle;
+        //const circle = typeof opts.circle === 'boolean' ? opts.circle : (this.options.viewport.type === 'circle');
+        //data.circle = circle;
+        data.circle = typeof opts.circle === 'boolean' ? opts.circle : (this.options.viewport.type === 'circle');
         data.url = this.data.url;
-        data.backgroundColor = backgroundColor;
+        //const backgroundColor = opts.backgroundColor;
+        //data.backgroundColor = backgroundColor;
+        data.backgroundColor = opts.backgroundColor;
 
         return new Promise((resolve) => {
+            const resultType = (typeof (options) === 'string' ? options : (opts.type || 'base64'));
             switch(resultType.toLowerCase())
             {
                 case 'rawcanvas':
@@ -262,7 +271,24 @@ export class Croppie {
      * @param {Number} deg Valid Values: 90, 180, 270, -90, -180, -270
      * */
     rotate(deg) {
-        throw new Error("rotate is not implemented now");
+        if (!this.options.useCanvas || !this.options.enableOrientation) {
+            throw 'Croppie: Cannot rotate without enableOrientation && EXIF.js included';
+        }
+
+        const canvas = this.elements.canvas;
+        this.data.orientation = getExifOffset(this.data.orientation, deg);
+        drawCanvas(canvas, this.elements.img, this.data.orientation);
+        this._updateCenterPoint(true);
+        this._updateZoomLimits();
+
+        // Reverses image dimensions if the degrees of rotation is not divisible by 180.
+        if ((Math.abs(deg) / 90) % 2 === 1) {
+            // what the hell is this?
+            const oldHeight = this._originalImageHeight;
+            const oldWidth = this._originalImageWidth;
+            this._originalImageWidth = oldHeight;
+            this._originalImageHeight = oldWidth;
+        }
     }
 
     /**
@@ -313,7 +339,7 @@ export class Croppie {
             width: this.options.viewport.width + 'px',
             height: this.options.viewport.height + 'px'
         });
-        viewport.setAttribute('tabindex', 0);
+        viewport.setAttribute('tabindex', '0');
 
         this.elements.preview.classList.add('cr-image');//addClass(this.elements.preview, 'cr-image');
         setAttributes(this.elements.preview, { 'alt': 'preview', 'aria-grabbed': 'false' });
@@ -356,10 +382,10 @@ export class Croppie {
             adj = {};
 
         if (rotate) {
-            var cx = pc.x;
-            var cy = pc.y;
-            var tx = transform.x;
-            var ty = transform.y;
+            const cx = pc.x;
+            const cy = pc.y;
+            const tx = transform.x;
+            const ty = transform.y;
 
             center.y = cx;
             center.x = cy;
@@ -482,7 +508,7 @@ export class Croppie {
             originalY = ev.pageY;
 
             if (ev.touches) {
-                var touches = ev.touches[0];
+                const touches = ev.touches[0];
                 originalX = touches.pageX;
                 originalY = touches.pageY;
             }
@@ -498,6 +524,7 @@ export class Croppie {
 
         const mouseMove = (ev) => {
             ev.preventDefault();
+            /*
             let pageX = ev.pageX,
                 pageY = ev.pageY;
 
@@ -505,7 +532,9 @@ export class Croppie {
                 var touches = ev.touches[0];
                 pageX = touches.pageX;
                 pageY = touches.pageY;
-            }
+            }*/
+            const touches = ev?.touches?.[0];
+            const [pageX, pageY] = (touches) ? [touches.pageX,touches.pageY] : [ev.pageX, ev.pageY];
 
             const deltaX = pageX - originalX,
                 deltaY = pageY - originalY,
@@ -580,14 +609,7 @@ export class Croppie {
         if (this.$ && typeof Prototype === 'undefined') {
             this.$(this.element).trigger('update.croppie', data);
         } else {
-            var ev;
-            if (window.CustomEvent) {
-                ev = new CustomEvent('update', { detail: data });
-            } else {
-                ev = document.createEvent('CustomEvent');
-                ev.initCustomEvent('update', true, true, data);
-            }
-
+            const ev = new CustomEvent('update', { detail: data });
             this.element.dispatchEvent(ev);
         }
     }
@@ -646,7 +668,7 @@ export class Croppie {
         if (this.options.enableZoom) {
             const z = this.elements.zoomer,
                 val = fix(v, 4);
-            z.value = Math.max(parseFloat(z.min), Math.min(parseFloat(z.max), val)).toString();
+            z.value = Math.max(parseFloat(z.min), Math.min(parseFloat(z.max), Number(val))).toString();
         }
     }
 
@@ -677,7 +699,7 @@ export class Croppie {
         }
 
         const scroll = (ev) => {
-            let delta, targetZoom;
+            let delta;
 
             if(this.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey !== true){
                 return 0;
@@ -691,8 +713,7 @@ export class Croppie {
                 delta = 0;
             }
 
-            targetZoom = this._currentZoom + (delta * this._currentZoom);
-
+            const targetZoom = this._currentZoom + (delta * this._currentZoom);
             ev.preventDefault();
             this._setZoomerVal(targetZoom);
             change();
@@ -859,21 +880,13 @@ export class Croppie {
         }
 
         const mouseMove = (ev) => {
-            var pageX = ev.pageX;
-            var pageY = ev.pageY;
-
             ev.preventDefault();
-
-            if (ev.touches) {
-                var touches = ev.touches[0];
-                pageX = touches.pageX;
-                pageY = touches.pageY;
-            }
-
-            var deltaX = pageX - originalX;
-            var deltaY = pageY - originalY;
-            var newHeight = this.options.viewport.height + deltaY;
-            var newWidth = this.options.viewport.width + deltaX;
+            const touches = ev?.touches?.[0];
+            const [pageX, pageY] = (touches) ? [touches.pageX,touches.pageY] : [ev.pageX, ev.pageY];
+            const deltaX = pageX - originalX;
+            const deltaY = pageY - originalY;
+            const newHeight = this.options.viewport.height + deltaY;
+            const newWidth = this.options.viewport.width + deltaX;
 
             if (direction === 'v' && newHeight >= minSize && newHeight <= maxHeight) {
                 css(wrap, {
@@ -1045,8 +1058,6 @@ export class Croppie {
             circle = data.circle,
             canvas = document.createElement('canvas'),
             ctx = canvas.getContext('2d'),
-            startX = 0,
-            startY = 0,
             canvasWidth = data.outputWidth || width,
             canvasHeight = data.outputHeight || height;
 
@@ -1114,6 +1125,32 @@ export class Croppie {
             ctx.fill();
         }
         return canvas;
+    }
+
+    _getHtmlResult(data) {
+        const points = data.points,
+            div = document.createElement('div'),
+            img = document.createElement('img'),
+            width = points[2] - points[0],
+            height = points[3] - points[1];
+
+        div.classList.add('croppie-result');//addClass(div, 'croppie-result');
+        div.appendChild(img);
+        css(img, {
+            left: (-1 * points[0]) + 'px',
+            top: (-1 * points[1]) + 'px'
+        });
+        img.src = data.url;
+        css(div, {
+            width: width + 'px',
+            height: height + 'px'
+        });
+
+        return div;
+    }
+
+    _getBase64Result(data) {
+        return this._getCanvas(data).toDataURL(data.format, data.quality);
     }
 
     _updateZoomLimits (initial) {

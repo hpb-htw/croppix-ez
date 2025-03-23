@@ -138,3 +138,13 @@ export class Transform {
         return new Transform(x, y, scale);
     };
 }
+
+export const getExifOffset = (ornt, rotate) => {
+    const EXIF_NORM = [1,8,3,6];
+    const EXIF_FLIP = [2,7,4,5];
+    const arr = EXIF_NORM.indexOf(ornt) > -1 ? EXIF_NORM : EXIF_FLIP,
+        index = arr.indexOf(ornt),
+        offset = (rotate / 90) % arr.length;// 180 = 2%4 = 2 shift exif by 2 indexes
+
+    return arr[(arr.length + index + (offset % arr.length)) % arr.length];
+}

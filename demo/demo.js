@@ -246,13 +246,13 @@ var Demo = (function() {
 	}
 
 	function init() {
-		//bindNavigation();
-		//demoMain();
-		//demoBasic();
+		bindNavigation();
+		demoMain();
+		demoBasic();
 		demoVanilla();	
-		//demoResizer();
-		//demoUpload();
-		//demoHidden();
+		demoResizer();
+		demoUpload();
+		demoHidden();
 	}
 
 	return {

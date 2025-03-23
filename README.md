@@ -1,6 +1,7 @@
 # Croppie - A Javascript Image Cropper
 
-(port to ES6 Module by Hong-Phuc Bui)
+(port to ES6 Module by Hong-Phuc Bui / Beta Version!!!!)
+
 
 ## To Install
 Bower: `bower install croppie`

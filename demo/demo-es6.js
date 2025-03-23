@@ -1,5 +1,6 @@
 import {Croppie} from "../croppie-es6.js";
 import {$} from '../node_modules/jquery/dist-module/jquery.module.min.js';
+import '../node_modules/sweetalert/dist/sweetalert.min.js';
 
 if (typeof $ !== 'undefined') {
     $.fn.croppie = function (opts) {
@@ -41,9 +42,6 @@ if (typeof $ !== 'undefined') {
     };
 }
 
-function swal(what) {
-    console.log(what);
-}
 
 const Demo = (function () {
     function output(node) {
@@ -311,8 +309,8 @@ const Demo = (function () {
         demoBasic();
         demoVanilla();
         demoResizer();
-        //demoUpload();
-        //demoHidden();
+        demoUpload();
+        demoHidden();
     }
 
     return {

@@ -310,7 +310,7 @@ const Demo = (function () {
         //demoMain();
         //demoBasic();
         demoVanilla();
-        //demoResizer();
+        demoResizer();
         //demoUpload();
         //demoHidden();
     }

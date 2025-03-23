@@ -10,9 +10,17 @@
  *************************/
 
 import {css, setAttributes} from "./vanilla-css.js";
-import {CSS_TRANS_ORG, CSS_TRANSFORM, TransformOrigin, Transform} from "./css-transform.js";
+import {CSS_TRANS_ORG, CSS_TRANSFORM, TransformOrigin, Transform, CSS_USERSELECT} from "./css-transform.js";
 import {debounce, dispatchChange} from "./debounce.js";
-import {drawCanvas, fix, getExifOrientation, loadImage, naturalImageDimensions} from "./dyn-image.js";
+import {drawCanvas, fix, getExifOrientation, loadImage, naturalImageDimensions, num} from "./dyn-image.js";
+import {clone, deepExtend} from "./clone.js";
+
+const RESULT_DEFAULTS = {
+        type: 'canvas',
+        format: 'png',
+        quality: 1
+    },
+    RESULT_FORMATS = ['jpeg', 'webp', 'png'];
 
 export class Croppie {
     element;
@@ -23,7 +31,7 @@ export class Croppie {
             throw new Error("Croppie: Can't initialize croppie more than once");
         }
         this.element = element;
-        this.options = Object.assign(defaultOptions, opts);
+        this.options = deepExtend(clone(Croppie.defaults), opts);
 
         if (this.element.tagName.toLowerCase() === 'img') {
             const origImage = this.element;
@@ -38,16 +46,17 @@ export class Croppie {
         }
         // selsame Funktionen
         this._debouncedOverlay = debounce(this._updateOverlay, 500);
-        this._create()
+        this._create();
+        if (this.options.url) {
+            const bindOpts = {
+                url: this.options.url,
+                points: this.options.points
+            };
+            delete this.options['url'];
+            delete this.options['points'];
+            this.bind(bindOpts);
+        }
     }
-
-    /*get element() {
-        return this.#element;
-    }*
-
-    /*get options() {
-        return this.#options;
-    }*/
 
     /**
      * Bind an image to the croppie.
@@ -63,9 +72,8 @@ export class Croppie {
      *
      * @return Promise
      * */
-    bind(options, cb) {
-        var self = this,
-            url,
+    bind(options, cb = undefined) {
+        var url,
             points = [],
             zoom = null,
             hasExif = this._hasExif();
@@ -77,8 +85,8 @@ export class Croppie {
         else if (Array.isArray(options)) {
             points = options.slice();
         }
-        else if (typeof (options) === 'undefined' && self.data.url) { //refreshing
-            _updatePropertiesFromImage.call(self);
+        else if (typeof (options) === 'undefined' && this.data.url) { //refreshing
+            this._updatePropertiesFromImage();
             this._triggerUpdate();
             return null;
         }
@@ -88,16 +96,16 @@ export class Croppie {
             zoom = typeof(options.zoom) === 'undefined' ? null : options.zoom;
         }
 
-        self.data.bound = false;
-        self.data.url = url || self.data.url;
-        self.data.boundZoom = zoom;
+        this.data.bound = false;
+        this.data.url = url || this.data.url;
+        this.data.boundZoom = zoom;
 
         return loadImage(url, hasExif).then( (img) => {
-            console.warn("Rewrite this function to use async/await")
+            console.warn("Rewrite loadImage function to use async/await")
             this._replaceImage(img);
             if (!points.length) {
                 var natDim = naturalImageDimensions(img);
-                var rect = self.elements.viewport.getBoundingClientRect();
+                var rect = this.elements.viewport.getBoundingClientRect();
                 var aspectRatio = rect.width / rect.height;
                 var imgAspectRatio = natDim.width / natDim.height;
                 var width, height;
@@ -115,9 +123,9 @@ export class Croppie {
                 var y0 = (natDim.height - height) / 2;
                 var x1 = x0 + width;
                 var y1 = y0 + height;
-                self.data.points = [x0, y0, x1, y1];
+                this.data.points = [x0, y0, x1, y1];
             }
-            else if (self.options.relative) {
+            else if (this.options.relative) {
                 points = [
                     points[0] * img.naturalWidth / 100,
                     points[1] * img.naturalHeight / 100,
@@ -126,12 +134,12 @@ export class Croppie {
                 ];
             }
 
-            self.data.orientation = options.orientation || 1;
-            self.data.points = points.map(function (p) {
+            this.data.orientation = options.orientation || 1;
+            this.data.points = points.map(function (p) {
                 return parseFloat(p);
             });
-            if (self.options.useCanvas) {
-                this._transferImageToCanvas(self.data.orientation);
+            if (this.options.useCanvas) {
+                this._transferImageToCanvas(this.data.orientation);
             }
             this._updatePropertiesFromImage();
             this._triggerUpdate();
@@ -158,28 +166,81 @@ export class Croppie {
     /**
      * Get the resulting crop of the image.
      *
-     * @param {Object} type
-     * @param type.type The type of result to return defaults to 'canvas'
+     * @param {Object} options
+     * @param options.type The type of result to return defaults to 'canvas'
      *          * 'base64' returns of the cropped image encoded in base64
      *          * 'html' returns html of the image positioned within an div of hidden overflow
      *          * 'blob' returns a blob of the cropped image
      *          * 'rawcanvas' returns the canvas element allowing you to manipulate prior to getting the resulted image
-     * @param type.size The size of the cropped image defaults to 'viewport'
+     * @param options.size The size of the cropped image defaults to 'viewport'
      *          * 'viewport' the size of the resulting image will be the same width and height as the viewport
      *          * 'original' the size of the resulting image will be at the original scale of the image
      *          * `{width, height}` an object defining the width and height. If only one dimension is specified, the other will be calculated using the viewport aspect ratio.
-     * @param type.format Indicating the image format.
+     * @param options.format Indicating the image format.
      *          * Default: 'png'
      *          * Valid values: 'jpeg'|'png'|'webp'
-     * @param type.quality Number between 0 and 1 indicating image quality.
+     * @param options.quality Number between 0 and 1 indicating image quality.
      *          * Default: 1
-     * @param type.circle force the result to be cropped into a circle
+     * @param options.circle force the result to be cropped into a circle
      *          * Valid values: true, false
      *
      * @return Promise
      * */
-    result(type) {
-        throw new Error("result is not implemented now");
+    result(options) {
+        var data = this._get(),
+            opts = deepExtend(clone(RESULT_DEFAULTS), clone(options)),
+            resultType = (typeof (options) === 'string' ? options : (opts.type || 'base64')),
+            size = opts.size || 'viewport',
+            format = opts.format,
+            quality = opts.quality,
+            backgroundColor = opts.backgroundColor,
+            circle = typeof opts.circle === 'boolean' ? opts.circle : (this.options.viewport.type === 'circle'),
+            vpRect = this.elements.viewport.getBoundingClientRect(),
+            ratio = vpRect.width / vpRect.height;
+
+        if (size === 'viewport') {
+            data.outputWidth = vpRect.width;
+            data.outputHeight = vpRect.height;
+        } else if (typeof size === 'object') {
+            if (size.width && size.height) {
+                data.outputWidth = size.width;
+                data.outputHeight = size.height;
+            } else if (size.width) {
+                data.outputWidth = size.width;
+                data.outputHeight = size.width / ratio;
+            } else if (size.height) {
+                data.outputWidth = size.height * ratio;
+                data.outputHeight = size.height;
+            }
+        }
+
+        if (RESULT_FORMATS.indexOf(format) > -1) {
+            data.format = 'image/' + format;
+            data.quality = quality;
+        }
+
+        data.circle = circle;
+        data.url = this.data.url;
+        data.backgroundColor = backgroundColor;
+
+        return new Promise((resolve) => {
+            switch(resultType.toLowerCase())
+            {
+                case 'rawcanvas':
+                    resolve( this._getCanvas(data));
+                    break;
+                case 'canvas':
+                case 'base64':
+                    resolve( this._getBase64Result(data));
+                    break;
+                case 'blob':
+                    this._getBlobResult(data).then(resolve);
+                    break;
+                default:
+                    resolve( this._getHtmlResult(data));
+                    break;
+            }
+        });
     }
 
     refresh() {
@@ -192,7 +253,7 @@ export class Croppie {
      * @param {Number} v a floating point to scale the image within the croppie. Must be between a min and max value set by croppie.
      * */
     setZoom(v) {
-
+        throw new Error("setZoom is not implemented now");
     }
 
     /**
@@ -201,14 +262,14 @@ export class Croppie {
      * @param {Number} deg Valid Values: 90, 180, 270, -90, -180, -270
      * */
     rotate(deg) {
-
+        throw new Error("rotate is not implemented now");
     }
 
     /**
      * Destroy a croppie instance and remove it from the DOM
      * */
     destroy() {
-
+        throw new Error("destroy is not implemented now");
     }
 
     /* Private Methods */
@@ -245,7 +306,7 @@ export class Croppie {
             height: (bh + (isNaN(bh) ? '' : 'px'))
         });
 
-        viewport.classList.add('cr-view-port');//addClass(viewport, 'cr-viewport');
+        viewport.classList.add('cr-viewport');//addClass(viewport, 'cr-viewport');
         if (customViewportClass) {
             viewport.classList.add(customViewportClass);//addClass(viewport, customViewportClass);
         }
@@ -359,7 +420,7 @@ export class Croppie {
             self.elements.boundary.setAttribute('aria-dropeffect', isDragging? 'move': 'none');
         }
 
-        function keyDown(ev) {
+        const keyDown = (ev) => {
             var LEFT_ARROW  = 37,
                 UP_ARROW    = 38,
                 RIGHT_ARROW = 39,
@@ -399,7 +460,7 @@ export class Croppie {
             }
         }
 
-        function keyMove(movement) {
+        const keyMove = (movement) => {
             var deltaX = movement[0],
                 deltaY = movement[1],
                 newCss = {};
@@ -408,14 +469,14 @@ export class Croppie {
 
             newCss[CSS_TRANSFORM] = transform.toString();
             css(self.elements.preview, newCss);
-            _updateOverlay.call(self);
+            this._updateOverlay(self);
             document.body.style[CSS_USERSELECT] = '';
-            _updateCenterPoint.call(self);
-            _triggerUpdate.call(self);
+            this._updateCenterPoint();
+            this._triggerUpdate();
             originalDistance = 0;
         }
 
-        function mouseDown(ev) {
+        const mouseDown = (ev) => {
             if (ev.button !== undefined && ev.button !== 0) return;
 
             ev.preventDefault();
@@ -439,7 +500,7 @@ export class Croppie {
             vpRect = self.elements.viewport.getBoundingClientRect();
         }
 
-        function mouseMove(ev) {
+        const mouseMove = (ev) => {
             ev.preventDefault();
             var pageX = ev.pageX,
                 pageY = ev.pageY;
@@ -466,7 +527,7 @@ export class Croppie {
 
                     var scale = dist / originalDistance;
 
-                    _setZoomerVal.call(self, scale);
+                    this._setZoomerVal(scale);
                     dispatchChange(self.elements.zoomer);
                     return;
                 }
@@ -476,12 +537,12 @@ export class Croppie {
 
             newCss[CSS_TRANSFORM] = transform.toString();
             css(self.elements.preview, newCss);
-            _updateOverlay.call(self);
+            this._updateOverlay();
             originalY = pageY;
             originalX = pageX;
         }
 
-        function mouseUp() {
+        const mouseUp = () => {
             isDragging = false;
             toggleGrabState(isDragging);
             window.removeEventListener('mousemove', mouseMove);
@@ -489,8 +550,8 @@ export class Croppie {
             window.removeEventListener('mouseup', mouseUp);
             window.removeEventListener('touchend', mouseUp);
             document.body.style[CSS_USERSELECT] = '';
-            _updateCenterPoint.call(self);
-            _triggerUpdate.call(self);
+            this._updateCenterPoint();
+            this._triggerUpdate();
             originalDistance = 0;
         }
 
@@ -544,7 +605,6 @@ export class Croppie {
     _updatePropertiesFromImage() {
         var self = this,
             initialZoom = 1,
-            cssReset = {},
             img = self.elements.preview,
             imgData,
             transformReset = new Transform(0, 0, initialZoom),
@@ -556,6 +616,7 @@ export class Croppie {
         }
 
         self.data.bound = true;
+        const cssReset = {};
         cssReset[CSS_TRANSFORM] = transformReset.toString();
         cssReset[CSS_TRANS_ORG] = originReset.toString();
         cssReset['opacity'] = 1;
@@ -579,13 +640,13 @@ export class Croppie {
         css(img, cssReset);
 
         if (self.data.points.length) {
-            _bindPoints.call(self, self.data.points);
+            this._bindPoints(self.data.points);
         } else {
-            this._centerImage(self);
+            this._centerImage();
         }
 
-        this._updateCenterPoint(self);
-        this._updateOverlay(self);
+        this._updateCenterPoint();
+        this._updateOverlay();
     }
 
     _setZoomerVal(v) {
@@ -623,7 +684,7 @@ export class Croppie {
             });
         }
 
-        function scroll(ev) {
+        const scroll = (ev) => {
             var delta, targetZoom;
 
             if(self.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey !== true){
@@ -641,7 +702,7 @@ export class Croppie {
             targetZoom = self._currentZoom + (delta * self._currentZoom);
 
             ev.preventDefault();
-            _setZoomerVal.call(self, targetZoom);
+            this._setZoomerVal(targetZoom);
             change.call(self);
         }
 
@@ -660,7 +721,7 @@ export class Croppie {
             vpRect = ui ? ui.viewportRect : self.elements.viewport.getBoundingClientRect(),
             origin = ui ? ui.origin : new TransformOrigin(self.elements.preview);
 
-        function applyCss() {
+        const applyCss = () => {
             const transCss = {};
             transCss[CSS_TRANSFORM] = transform.toString();
             transCss[CSS_TRANS_ORG] = origin.toString();
@@ -856,10 +917,10 @@ export class Croppie {
                 });
             }
 
-            _updateOverlay.call(self);
-            _updateZoomLimits.call(self);
-            _updateCenterPoint.call(self);
-            _triggerUpdate.call(self);
+            this._updateOverlay();
+            this._updateZoomLimits();
+            this._updateCenterPoint();
+            this._triggerUpdate();
             originalY = pageY;
             originalX = pageX;
         }
@@ -915,6 +976,14 @@ export class Croppie {
         };
     }
 
+    _getBlobResult(data) {
+        return new Promise((resolve) => {
+            this._getCanvas(data).toBlob((blob) => {
+                resolve(blob);
+            }, data.format, data.quality);
+        });
+    }
+
     _replaceImage(img) {
         if (this.elements.img.parentNode) {
             Array.prototype.forEach.call(this.elements.img.classList, function(c) { img.classList.add(c); });
@@ -922,6 +991,34 @@ export class Croppie {
             this.elements.preview = img; // if the img is attached to the DOM, they're not using the canvas
         }
         this.elements.img = img;
+    }
+
+    _bindPoints(points) {
+        if (points.length !== 4) {
+            throw "Croppie - Invalid number of points supplied: " + points;
+        }
+        var self = this,
+            pointsWidth = points[2] - points[0],
+            // pointsHeight = points[3] - points[1],
+            vpData = self.elements.viewport.getBoundingClientRect(),
+            boundRect = self.elements.boundary.getBoundingClientRect(),
+            vpOffset = {
+                left: vpData.left - boundRect.left,
+                top: vpData.top - boundRect.top
+            },
+            scale = vpData.width / pointsWidth,
+            originTop = points[1],
+            originLeft = points[0],
+            transformTop = (-1 * points[1]) + vpOffset.top,
+            transformLeft = (-1 * points[0]) + vpOffset.left,
+            newCss = {};
+
+        newCss[CSS_TRANS_ORG] = originLeft + 'px ' + originTop + 'px';
+        newCss[CSS_TRANSFORM] = new Transform(transformLeft, transformTop, scale).toString();
+        css(self.elements.preview, newCss);
+
+        this._setZoomerVal(scale);
+        self._currentZoom = scale;
     }
 
     _centerImage() {
@@ -939,17 +1036,99 @@ export class Croppie {
     }
 
     _transferImageToCanvas(customOrientation) {
-        const self = this,
-            canvas = self.elements.canvas,
-            img = self.elements.img,
+        const canvas = this.elements.canvas,
+            img = this.elements.img,
             ctx = canvas.getContext('2d');
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         canvas.width = img.width;
         canvas.height = img.height;
 
-        const orientation = self.options.enableOrientation && customOrientation || getExifOrientation(img);
+        const orientation = this.options.enableOrientation && customOrientation || getExifOrientation(img);
         drawCanvas(canvas, img, orientation);
+    }
+
+    _getCanvas(data) {
+        var self = this,
+            points = data.points,
+            left = num(points[0]),
+            top = num(points[1]),
+            right = num(points[2]),
+            bottom = num(points[3]),
+            width = right-left,
+            height = bottom-top,
+            circle = data.circle,
+            canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d'),
+            startX = 0,
+            startY = 0,
+            canvasWidth = data.outputWidth || width,
+            canvasHeight = data.outputHeight || height;
+
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+
+        if (data.backgroundColor) {
+            ctx.fillStyle = data.backgroundColor;
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        }
+
+        // By default assume we're going to draw the entire
+        // source image onto the destination canvas.
+        var sx = left,
+            sy = top,
+            sWidth = width,
+            sHeight = height,
+            dx = 0,
+            dy = 0,
+            dWidth = canvasWidth,
+            dHeight = canvasHeight;
+
+        //
+        // Do not go outside of the original image's bounds along the x-axis.
+        // Handle translations when projecting onto the destination canvas.
+        //
+
+        // The smallest possible source x-position is 0.
+        if (left < 0) {
+            sx = 0;
+            dx = (Math.abs(left) / width) * canvasWidth;
+        }
+
+        // The largest possible source width is the original image's width.
+        if (sWidth + sx > self._originalImageWidth) {
+            sWidth = self._originalImageWidth - sx;
+            dWidth =  (sWidth / width) * canvasWidth;
+        }
+
+        //
+        // Do not go outside of the original image's bounds along the y-axis.
+        //
+
+        // The smallest possible source y-position is 0.
+        if (top < 0) {
+            sy = 0;
+            dy = (Math.abs(top) / height) * canvasHeight;
+        }
+
+        // The largest possible source height is the original image's height.
+        if (sHeight + sy > self._originalImageHeight) {
+            sHeight = self._originalImageHeight - sy;
+            dHeight = (sHeight / height) * canvasHeight;
+        }
+
+        // console.table({ left, right, top, bottom, canvasWidth, canvasHeight, width, height, startX, startY, circle, sx, sy, dx, dy, sWidth, sHeight, dWidth, dHeight });
+
+        ctx.drawImage(this.elements.preview, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+        if (circle) {
+            ctx.fillStyle = '#fff';
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+        }
+        return canvas;
     }
 
     _updateZoomLimits (initial) {
@@ -990,8 +1169,6 @@ export class Croppie {
         dispatchChange(zoomer);
     }
 }
-
-
 
 
 const defaultOptions = {

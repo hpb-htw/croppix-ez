@@ -113,3 +113,7 @@ export function drawCanvas(canvas, img, orientation) {
 export function fix(v, decimalPoints) {
     return parseFloat(v).toFixed(decimalPoints || 0);
 }
+
+export function num(v) {
+    return parseInt(v, 10);
+}

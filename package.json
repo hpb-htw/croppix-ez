@@ -1,18 +1,21 @@
 {
   "name": "croppie-es6",
-  "version": "3.0.0",
+  "version": "3.0.0-beta",
   "description": "A simple javascript image cropper",
-  "main": "croppie-es6.js",
   "type": "module",
-
+  "files": ["lib","dist"],
+  "main": "dist/croppie-es6.umd.cjs",
+  "module": "dist/croppie-es6.js",
   "scripts": {
-    "test": "mocha test/unit",
-    "deploy": "node deploy.js",
-    "uglify": "uglifyjs croppie-es6.js -c -m -o croppie-es6.min.js"
+    "dev": "echo DEV",
+    "test": "echo TEST",
+    "build": "vite build",
+    "deploy": "echo DEPLOY",
+    "clean": "rm -rf dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Foliotek/Croppie.git"
+    "url": "git+https://github.com/hpb-htw/Croppie-es6"
   },
   "keywords": [
     "crop",
@@ -27,22 +30,13 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Foliotek/Croppie/issues"
+    "url": "http://hpb-htw.github.io/croppie-es6/issues"
   },
   "homepage": "http://hpb-htw.github.io/croppie-es6",
-  "files": [
-    "croppie.css",
-    "croppie-es6.js",
-    "croppie-es6.min.js"
-  ],
-  "dependencies": {
-  },
   "devDependencies": {
-    "gh-pages": "6.3.0",
-    "mocha": "11.1.0",
-    "uglify-js": "3.19.3",
+    "exif-js": "2.1.1",
     "jquery": "4.0.0-beta.2",
     "sweetalert": "1.1.3",
-    "exif-js": "2.1.1"
+    "vite": "6.2.3"
   }
 }

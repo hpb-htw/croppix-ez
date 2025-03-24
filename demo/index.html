@@ -14,11 +14,11 @@
     <meta property="og:image" content="https://foliotek.github.io/Croppie/demo/hero.png">
 
 
-    <link rel="Stylesheet" type="text/css" href="demo/prism.css"/>
-    <link rel="Stylesheet" type="text/css" href="node_modules/sweetalert/dist/sweetalert.css"/>
-    <link rel="Stylesheet" type="text/css" href="croppie.css"/>
-    <link rel="Stylesheet" type="text/css" href="demo/demo.css"/>
-    <link rel="icon" href="//foliotek.github.io/favico-64.png"/>
+    <link rel="stylesheet" type="text/css" href="prism.css"/>
+    <link rel="stylesheet" type="text/css" href="../node_modules/sweetalert/dist/sweetalert.css"/>
+    <link rel="stylesheet" type="text/css" href="../lib/croppie.css"/>
+    <link rel="stylesheet" type="text/css" href="demo.css"/>
+    <link rel="icon" href="./croppie-favicon.svg"/>
 </head>
 <body>
 <section class="hero">
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="col-1-2">
-                <img class="demo-cropper" id="cropper-1" src="demo/demo-1.jpg" style="display: none;" alt=""/>
+                <img class="demo-cropper" id="cropper-1" src="demo-1.jpg" style="display: none;" alt=""/>
             </div>
         </div>
     </div>
@@ -71,9 +71,6 @@ $('.my-image').croppie();
         <p><strong>NPM:</strong></p>
         <pre class="language-javascript" style="width: 300px;"><code
                 class="language-javascript">npm install croppie-es6</code></pre>
-        <p><strong>Bower:</strong></p>
-        <pre class="language-javascript" style="width: 300px;"><code
-                class="language-javascript">bower install croppie-es6</code></pre>
         <p><strong>Download:</strong></p>
         <p><a href="https://github.com/hpb-htw/Croppie-es6">Source</a></p>
 
@@ -333,7 +330,7 @@ document.getElementById('another-croppie').addEventListener('update', function(e
             To use Croppie ES6 as a jQuery Plugin you have to bind `croppie` to jQuery:
             <pre class="language-javascript"><code>/*********
    to be done
-   for now see `demo/demo-es6.js`
+   for now see `demo/demo.js`
 *********/</code></pre>
         </section>
     </div>
@@ -569,11 +566,11 @@ $('#my-modal').on('shown.bs.modal', function(){
     Copyright &copy; <span id="year">2017</span> | Foliotek
 </footer>
 
-<script src="demo/prism.js"></script>
+<script src="prism.js"></script>
 
-<script src="node_modules/exif-js/exif.js"></script>
+<script src="../node_modules/exif-js/exif.js"></script>
 
-<script src="demo/demo-es6.js" type="module"></script>
+<script src="demo.js" type="module"></script>
 
 
 <a href="https://github.com/foliotek/croppie" class="github-corner">

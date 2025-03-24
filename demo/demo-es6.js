@@ -4,11 +4,10 @@ import '../node_modules/sweetalert/dist/sweetalert.min.js';
 
 if (typeof $ !== 'undefined') {
     $.fn.croppie = function (opts) {
-        var ot = typeof opts;
-
+        const ot = typeof opts;
         if (ot === 'string') {
-            var args = Array.prototype.slice.call(arguments, 1);
-            var singleInst = $(this).data('croppie');
+            const args = Array.prototype.slice.call(arguments, 1);
+            const singleInst = $(this).data('croppie');
 
             if (opts === 'get') {
                 return singleInst.get();
@@ -19,10 +18,10 @@ if (typeof $ !== 'undefined') {
             }
 
             return this.each(function () {
-                var i = $(this).data('croppie');
+                const i = $(this).data('croppie');
                 if (!i) return;
 
-                var method = i[opts];
+                const method = i[opts];
                 if ($.isFunction(method)) {
                     method.apply(i, args);
                     if (opts === 'destroy') {
@@ -34,7 +33,7 @@ if (typeof $ !== 'undefined') {
             });
         } else {
             return this.each(function () {
-                var i = new Croppie(this, opts);
+                const i = new Croppie(this, opts);
                 i.$ = $;
                 $(this).data('croppie', i);
             });
@@ -56,7 +55,7 @@ const Demo = (function () {
     }
 
     function popupResult(result) {
-        var html;
+        let html;
         if (result.html) {
             html = result.html;
         }
@@ -71,7 +70,7 @@ const Demo = (function () {
         });
         setTimeout(function () {
             $('.sweet-alert').css('margin', function () {
-                var top = -1 * ($(this).height() / 2),
+                const top = -1 * ($(this).height() / 2),
                     left = -1 * ($(this).width() / 2);
 
                 return top + 'px 0 0 ' + left + 'px';
@@ -80,7 +79,7 @@ const Demo = (function () {
     }
 
     function demoMain() {
-        var mc = $('#cropper-1');
+        const mc = $('#cropper-1');
         mc.croppie({
             viewport: {
                 width: 150,
@@ -113,9 +112,7 @@ const Demo = (function () {
     }
 
     function demoBasic() {
-        var $w = $('.basic-width'),
-            $h = $('.basic-height'),
-            basic = $('#demo-basic').croppie({
+        const basic = $('#demo-basic').croppie({
             viewport: {
                 width: 150,
                 height: 200
@@ -131,9 +128,11 @@ const Demo = (function () {
         });
 
         $('.basic-result').on('click', function() {
-            var w = parseInt($w.val(), 10),
-                h = parseInt($h.val(), 10),s,
-                size = 'viewport';
+            const $w = $('.basic-width'),
+                $h = $('.basic-height');
+            const w = parseInt($w.val(), 10),
+                h = parseInt($h.val(), 10);
+            let size = 'viewport';
             if (w || h) {
                 size = { width: w, height: h };
             }
@@ -153,7 +152,7 @@ const Demo = (function () {
     }
 
     function demoVanilla() {
-        var vEl = document.getElementById('vanilla-demo'),
+        const vEl = document.getElementById('vanilla-demo'),
             vanilla = new Croppie(vEl, {
                 viewport: {width: 200, height: 100},
                 boundary: {width: 300, height: 300},
@@ -166,7 +165,7 @@ const Demo = (function () {
             zoom: 0
         });
         vEl.addEventListener('update', function (ev) {
-            // console.log('vanilla update', ev);
+            //console.log('vanilla update', ev);
         });
         document.querySelector('.vanilla-result').addEventListener('click', function (ev) {
             vanilla.result({
@@ -184,7 +183,7 @@ const Demo = (function () {
     }
 
     function demoResizer() {
-        var vEl = document.getElementById('resizer-demo'),
+        const vEl = document.getElementById('resizer-demo'),
             resize = new Croppie(vEl, {
                 viewport: {width: 100, height: 100},
                 boundary: {width: 300, height: 300},
@@ -212,11 +211,17 @@ const Demo = (function () {
     }
 
     function demoUpload() {
-        var $uploadCrop;
+        const $uploadCrop = $('#upload-demo').croppie({
+            viewport: {
+                width: 100,
+                height: 100,
+                type: 'circle'
+            },
+            enableExif: true
+        });
 
         function readFile(input) {
             console.warn("TODO: port to ES6");
-
              if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
@@ -229,24 +234,12 @@ const Demo = (function () {
                     });
 
                 }
-
                 reader.readAsDataURL(input.files[0]);
             }
             else {
                 swal("Sorry - you're browser doesn't support the FileReader API");
             }
         }
-
-
-
-        $uploadCrop = $('#upload-demo').croppie({
-            viewport: {
-                width: 100,
-                height: 100,
-                type: 'circle'
-            },
-            enableExif: true
-        });
 
         $('#upload').on('change', function () { readFile(this); });
         $('.upload-result').on('click', function (ev) {
@@ -263,7 +256,7 @@ const Demo = (function () {
     }
 
     function demoHidden() {
-        var $hid = $('#hidden-demo');
+        const $hid = $('#hidden-demo');
 
         $hid.croppie({
             viewport: {
@@ -283,28 +276,7 @@ const Demo = (function () {
         });
     }
 
-    function bindNavigation() {
-        const navBars = document.querySelectorAll('nav a');
-        navBars.forEach((node) => {
-            node.addEventListener("click", function (ev) {
-                console.log("TODO: make", ev.target, "behave as origin");
-                ev.preventDefault();
-            })
-        });
-        /*
-        var $html = $('html');
-        $('nav a').on('click', function (ev) {
-            var lnk = $(ev.currentTarget),
-                href = lnk.attr('href'),
-                targetTop = $('a[name=' + href.substring(1) + ']').offset().top;
-
-            $html.animate({ scrollTop: targetTop });
-            ev.preventDefault();
-        });*/
-    }
-
     function init() {
-        bindNavigation();
         demoMain();
         demoBasic();
         demoVanilla();
@@ -317,45 +289,6 @@ const Demo = (function () {
         init: init
     };
 })();
-
-
-// Full version of `log` that:
-//  * Prevents errors on console methods when no console present.
-//  * Exposes a global 'log' function that preserves line numbering and formatting.
-(function () {
-    var method;
-    var noop = function () {
-    };
-    var methods = [
-        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-        'timeStamp', 'trace', 'warn'
-    ];
-    var length = methods.length;
-    var console = (window.console = window.console || {});
-
-    while (length--) {
-        method = methods[length];
-
-        // Only stub undefined methods.
-        if (!console[method]) {
-            console[method] = noop;
-        }
-    }
-
-
-    if (Function.prototype.bind) {
-        window.log = Function.prototype.bind.call(console.log, console);
-    } else {
-        window.log = function () {
-            Function.prototype.apply.call(console.log, console, arguments);
-        };
-    }
-})();
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", () => {

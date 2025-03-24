@@ -296,6 +296,12 @@ h2 {
 	width: 75%;
 }
 
+.todo-check-compatible::before {
+    content: "(not check compatible yet)";
+    color: #7D8B99;
+    font-style: italic;
+}
+
 @media handheld, only screen and (max-width: 767px) {
     .grid {
         width: 100%;

@@ -51,7 +51,7 @@ export class Croppie {
             this.element = replacementDiv;
             this.options.url = this.options.url || origImage.src;
         }
-        // selsame Funktionen
+        // seltsame Funktionen
         this._debouncedOverlay = debounce(this._updateOverlay, 500);
         this._create();
         if (this.options.url) {

@@ -2,6 +2,7 @@ import {Croppie} from "../lib/croppie-es6.js";
 import {$} from '../node_modules/jquery/dist-module/jquery.module.min.js';
 import '../node_modules/sweetalert/dist/sweetalert.min.js';
 
+
 if (typeof $ !== 'undefined') {
     $.fn.croppie = function (opts) {
         const ot = typeof opts;
@@ -123,7 +124,7 @@ const Demo = (function () {
             }
         });
         basic.croppie('bind', {
-            url: './cat.jpg',
+            url: './img/cat.jpg',
             points: [77,469,280,739]
         });
 
@@ -160,7 +161,7 @@ const Demo = (function () {
                 enableOrientation: true
             });
         vanilla.bind({
-            url: './demo-2.jpg',
+            url: './img/demo-2.jpg',
             orientation: 4,
             zoom: 0
         });
@@ -193,7 +194,7 @@ const Demo = (function () {
                 mouseWheelZoom: 'ctrl'
             });
         resize.bind({
-            url: './demo-2.jpg',
+            url: './img/demo-2.jpg',
             zoom: 0
         });
         vEl.addEventListener('update', function (ev) {
@@ -269,7 +270,7 @@ const Demo = (function () {
                 height: 200
             }
         });
-        $hid.croppie('bind', './demo-3.jpg');
+        $hid.croppie('bind', './img/demo-3.jpg');
         $('.show-hidden').on('click', function () {
             $hid.toggle();
             $hid.croppie('bind');

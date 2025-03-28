@@ -10,8 +10,9 @@
     "dev": "echo DEV",
     "test": "echo TEST",
     "build": "vite build",
+    "build-demo": "vite build --config vite-demo.config.js; cp -r demo/img dist-demo",
     "deploy": "echo DEPLOY",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist cropie-es6-*.tgz"
   },
   "repository": {
     "type": "git",
@@ -30,9 +31,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "http://hpb-htw.github.io/croppie-es6/issues"
+    "url": "https://hpb-htw.github.io/croppie-es6/issues"
   },
-  "homepage": "http://hpb-htw.github.io/croppie-es6",
+  "homepage": "https://hpb-htw.github.io/croppie-es6",
   "devDependencies": {
     "exif-js": "2.1.1",
     "jquery": "4.0.0-beta.2",

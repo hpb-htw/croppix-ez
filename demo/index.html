@@ -9,9 +9,8 @@
 
     <meta property="og:title" content="Croppie - a javascript image cropper">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://foliotek.github.io/Croppie">
+
     <meta property="og:description" content="Croppie is an easy to use javascript image cropper.">
-    <meta property="og:image" content="https://foliotek.github.io/Croppie/demo/hero.png">
 
 
     <link rel="stylesheet" type="text/css" href="prism.css"/>
@@ -42,7 +41,7 @@
                 </div>
             </div>
             <div class="col-1-2">
-                <img class="demo-cropper" id="cropper-1" src="demo-1.jpg" style="display: none;" alt=""/>
+                <img class="demo-cropper" id="cropper-1" src="./img/demo-1.jpg" style="display: none;" alt=""/>
             </div>
         </div>
     </div>
@@ -53,11 +52,11 @@
                 <pre class="language-html"><code class="language-html">&lt;div class="demo"&gt;&lt;/div&gt;
 &lt;script&gt;
 $('.demo').croppie({
-    url: 'demo/demo-1.jpg',
+    url: 'img/demo-1.jpg',
 });
 &lt;/script&gt;
 &lt;!-- or even simpler --&gt;
-&lt;img class="my-image" src="demo/demo-1.jpg" /&gt;
+&lt;img class="my-image" src="img/demo-1.jpg" /&gt;
 &lt;script&gt;
 $('.my-image').croppie();
 &lt;/script&gt;
@@ -354,7 +353,7 @@ const basic = $('#demo-basic').croppie({
     }
 });
 basic.croppie('bind', {
-    url: 'demo/cat.jpg',
+    url: 'img/cat.jpg',
     points: [77,469,280,739]
 });
 //on button click
@@ -391,7 +390,7 @@ const vanilla = new Croppie(el, {
     enableOrientation: true
 });
 vanilla.bind({
-    url: 'demo/demo-2.jpg',
+    url: 'img/demo-2.jpg',
     orientation: 4
 });
 //on button click
@@ -423,7 +422,7 @@ const resize = new Croppie(el, {
     mouseWheelZoom: 'ctrl'
 });
 resize.bind({
-    url: 'demo/demo-2.jpg',
+    url: 'img/demo-2.jpg',
 });
 //on button click
 resize.result('blob').then(function(blob) {
@@ -566,9 +565,9 @@ $('#my-modal').on('shown.bs.modal', function(){
     Copyright &copy; <span id="year">2017</span> | Foliotek
 </footer>
 
-<script src="prism.js"></script>
+<script src="prism.js" type="module"></script>
 
-<script src="../node_modules/exif-js/exif.js"></script>
+<script src="../node_modules/exif-js/exif.js" type="module"></script>
 
 <script src="demo.js" type="module"></script>
 

@@ -15,5 +15,5 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-          npm install
+          pwd ; npm install; npm run buid;
       - run: echo "🍏 This job's status is ${{ job.status }}."

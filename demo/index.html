@@ -119,7 +119,8 @@ $('#item').croppie(method, args);</code></pre>
                     <strong class="focus">enableExif</strong><em>boolean</em>
                     <p>Enable exif orientation reading. Tells Croppie to read exif orientation from the image data and
                         orient the image correctly before rendering to the page.</p>
-                    <p>Requires <a href="https://github.com/exif-js/exif-js">exif.js</a></p>
+                    <p>Requires <a href="https://github.com/hpb-htw/exif-es6">exif-es6</a></p>
+                    <p>See <a href="#exif">exif</a></p>
                     <span class="default">Default</span><code class="language-javascript">false</code>
                 </li>
                 <li id="enableOrientation">
@@ -331,6 +332,14 @@ document.getElementById('another-croppie').addEventListener('update', function(e
    to be done
    for now see `demo/demo.js`
 *********/</code></pre>
+        </section>
+        <section>
+            <a id="exif"></a>
+            <h3>Exif information</h3>
+            To use Exif in an image you have to expose the Object <code>EXIF</code> in global scope.
+            <pre class="language-javascript"><code>/*******
+    To be done
+*******/</code></pre>
         </section>
     </div>
 </section>
@@ -566,9 +575,6 @@ $('#my-modal').on('shown.bs.modal', function(){
 </footer>
 
 <script src="prism.js" type="module"></script>
-
-<script src="../node_modules/exif-js/exif.js" type="module"></script>
-
 <script src="demo.js" type="module"></script>
 
 

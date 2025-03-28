@@ -4,4 +4,4 @@ node_modules/
 bower_components
 /nbproject/private/
 dist/
-dist-demo/
+www/

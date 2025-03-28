@@ -9,7 +9,7 @@ export default defineConfig({
     base:"./",
     mode: "production",
     build: {
-        outDir: "../dist-demo",
+        outDir: "../www",
         emptyOutDir: true
     }
 })

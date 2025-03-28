@@ -2,6 +2,9 @@ import {Croppie} from "../lib/croppie-es6.js";
 import {$} from '../node_modules/jquery/dist-module/jquery.module.min.js';
 import '../node_modules/sweetalert/dist/sweetalert.min.js';
 
+import {EXIF} from "../node_modules/exif-es6/lib/exif-es6.js";
+
+window.EXIF = EXIF; // expose EXIF to global scope
 
 if (typeof $ !== 'undefined') {
     $.fn.croppie = function (opts) {

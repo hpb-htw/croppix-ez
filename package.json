@@ -13,7 +13,7 @@
     "dev": "echo DEV",
     "test": "echo TEST",
     "build": "vite build",
-    "build-demo": "vite build --config vite-demo.config.js; cp -r demo/img dist-demo",
+    "build:demo": "vite build --config vite-demo.config.js; cp -r demo/img www",
     "deploy": "echo DEPLOY",
     "clean": "rm -rf dist cropie-es6-*.tgz"
   },

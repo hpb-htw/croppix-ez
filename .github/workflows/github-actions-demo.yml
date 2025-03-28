@@ -18,6 +18,7 @@ jobs:
           pwd 
           npm install
           npm run build
+          npm run build:demo
       - name: Verify generated code
         run: |
           ls ${{ github.workspace }}/www

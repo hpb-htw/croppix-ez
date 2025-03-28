@@ -3,7 +3,10 @@
   "version": "3.0.0-beta",
   "description": "A simple javascript image cropper",
   "type": "module",
-  "files": ["lib","dist"],
+  "files": [
+    "lib",
+    "dist"
+  ],
   "main": "dist/croppie-es6.umd.cjs",
   "module": "dist/croppie-es6.js",
   "scripts": {
@@ -35,9 +38,11 @@
   },
   "homepage": "https://hpb-htw.github.io/croppie-es6",
   "devDependencies": {
-    "exif-js": "2.1.1",
     "jquery": "4.0.0-beta.2",
     "sweetalert": "1.1.3",
     "vite": "6.2.3"
+  },
+  "dependencies": {
+    "exif-es6": "0.0.1"
   }
 }

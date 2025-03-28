@@ -9,9 +9,10 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, 'lib/main.js'),
             name: 'croppie-es6',
-            // the proper extensions will be added
-            fileName: 'croppie-es6',
+            fileName: (format, name) => `croppie-es6.${format}.js`,
+            formats: ['es','umd'],
         },
+        sourcemap: true,
         rollupOptions: {
             // make sure to externalize deps that shouldn't be bundled
             // into your library
@@ -25,4 +26,4 @@ export default defineConfig({
             },
         },
     },
-})
+});

@@ -1,5 +1,5 @@
 {
-  "name": "croppie-es6",
+  "name": "easy-crop",
   "version": "3.0.0-beta",
   "description": "A simple javascript image cropper",
   "type": "module",
@@ -7,8 +7,8 @@
     "lib",
     "dist"
   ],
-  "main": "dist/croppie-es6.umd.cjs",
-  "module": "dist/croppie-es6.js",
+  "main": "dist/easy-crop.umd.js",
+  "module": "dist/easy-crop-es6.js",
   "scripts": {
     "dev": "echo DEV",
     "test": "echo TEST",

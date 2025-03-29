@@ -8,8 +8,8 @@ export default defineConfig({
     build: {
         lib: {
             entry: resolve(__dirname, 'lib/main.js'),
-            name: 'croppie-es6',
-            fileName: (format, name) => `croppie-es6.${format}.js`,
+            name: 'easy-crop',
+            fileName: (format, name) => `easy-crop.${format}.js`,
             formats: ['es','umd'],
         },
         sourcemap: true,

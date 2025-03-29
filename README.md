@@ -1,21 +1,22 @@
-# Croppie - A Javascript Image Cropper
+# easy-crop A Javascript Image Cropping Tool
 
-(port to ES6 Module by Hong-Phuc Bui / Beta Version!!!!)
+
 
 
 ## To Install
 
-Npm: `npm install croppie-es6`
+Npm: `npm install easy-crop`
 
 Download:
-[croppie.js](origin/croppie.js) & [croppie.css](lib/croppie.css)
+
+[easy-crop](https://github.com/hpb-htw/easy-crop)
 
 ## Adding croppie-es6 to your site
 
 ```html
 
 <link rel="stylesheet" href="lib/croppie.css"/>
-<script src="croppie-es6.js" type="module"></script>
+<script src="easy-crop.js" type="module"></script>
 ```
 
 ## CDN

@@ -1,4 +1,4 @@
-import {Croppie} from "../lib/croppie-es6.js";
+import {EasyCrop} from "../lib/easy-crop.js";
 import {$} from '../node_modules/jquery/dist-module/jquery.module.min.js';
 import '../node_modules/sweetalert/dist/sweetalert.min.js';
 
@@ -6,12 +6,14 @@ import {EXIF} from "../node_modules/exif-es6/lib/exif-es6.js";
 
 window.EXIF = EXIF; // expose EXIF to global scope
 
+const JQUERY_BIND_NAME = 'croppie';
+
 if (typeof $ !== 'undefined') {
-    $.fn.croppie = function (opts) {
+    $.fn.crop = function (opts) {
         const ot = typeof opts;
         if (ot === 'string') {
             const args = Array.prototype.slice.call(arguments, 1);
-            const singleInst = $(this).data('croppie');
+            const singleInst = $(this).data(JQUERY_BIND_NAME);
 
             if (opts === 'get') {
                 return singleInst.get();
@@ -22,14 +24,14 @@ if (typeof $ !== 'undefined') {
             }
 
             return this.each(function () {
-                const i = $(this).data('croppie');
+                const i = $(this).data(JQUERY_BIND_NAME);
                 if (!i) return;
 
                 const method = i[opts];
                 if ($.isFunction(method)) {
                     method.apply(i, args);
                     if (opts === 'destroy') {
-                        $(this).removeData('croppie');
+                        $(this).removeData(JQUERY_BIND_NAME);
                     }
                 } else {
                     throw 'Croppie ' + opts + ' method not found';
@@ -37,9 +39,9 @@ if (typeof $ !== 'undefined') {
             });
         } else {
             return this.each(function () {
-                const i = new Croppie(this, opts);
+                const i = new EasyCrop(this, opts);
                 i.$ = $;
-                $(this).data('croppie', i);
+                $(this).data(JQUERY_BIND_NAME, i);
             });
         }
     };
@@ -157,7 +159,7 @@ const Demo = (function () {
 
     function demoVanilla() {
         const vEl = document.getElementById('vanilla-demo'),
-            vanilla = new Croppie(vEl, {
+            vanilla = new EasyCrop(vEl, {
                 viewport: {width: 200, height: 100},
                 boundary: {width: 300, height: 300},
                 showZoomer: false,
@@ -188,7 +190,7 @@ const Demo = (function () {
 
     function demoResizer() {
         const vEl = document.getElementById('resizer-demo'),
-            resize = new Croppie(vEl, {
+            resize = new EasyCrop(vEl, {
                 viewport: {width: 100, height: 100},
                 boundary: {width: 300, height: 300},
                 showZoomer: false,

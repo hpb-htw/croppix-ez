@@ -5,7 +5,7 @@
 
 ## To Install
 
-Npm: `npm install easy-crop`
+Npm: TODO
 
 Download:
 

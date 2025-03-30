@@ -15,7 +15,8 @@ jobs:
         run: |
           npm install
           npm run build
-          npm run build:doc
+          npm run build:demo
+          ls www
       - run: echo "This job's status is ${{ job.status }}."
 
   deploy:

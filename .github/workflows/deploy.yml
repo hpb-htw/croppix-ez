@@ -27,8 +27,8 @@ jobs:
         with:
           repository: '${{ github.actor }}/${{ github.repository }}-doc'
           ref: 'master'
-          token: $${{ secret.CLONE_TOKEN }}
-      - name: Confirm clone docment token OK
+          token: $${{ secrets.CLONE_TOKEN }}
+      - name: Confirm clone document token OK
         run: |
           pwd
           ls

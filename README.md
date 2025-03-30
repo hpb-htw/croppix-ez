@@ -9,7 +9,7 @@ Npm: `npm install easy-crop`
 
 Download:
 
-[easy-crop](https://github.com/hpb-htw/easy-crop)
+TODO
 
 ## Adding croppie-es6 to your site
 

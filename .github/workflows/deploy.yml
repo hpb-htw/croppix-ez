@@ -16,7 +16,7 @@ jobs:
           npm install
           npm run build
           npm run build:demo
-          ls www
+          ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
 
   deploy:

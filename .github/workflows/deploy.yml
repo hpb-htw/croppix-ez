@@ -16,6 +16,7 @@ jobs:
           npm install
           npm run build
           npm run build:demo
+          pwd
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
 
@@ -26,7 +27,7 @@ jobs:
       - name: Check out document repository
         uses: actions/checkout@v4
         with:
-          repository: '${{ github.actor }}/${{ github.repository }}-doc'
+          repository: '${{ github.repository }}-doc'
           ref: 'master'
           token: $${{ secrets.CLONE_TOKEN }}
       - name: Confirm clone document token OK

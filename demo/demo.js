@@ -1,6 +1,6 @@
 import {CroppixEz} from "../lib/croppix-ez.js";
-import {$} from '../node_modules/jquery/dist-module/jquery.module.min.js';
-import '../node_modules/sweetalert/dist/sweetalert.min.js';
+import {$} from './node_modules/jquery/dist-module/jquery.module.min.js';
+import './node_modules/sweetalert/dist/sweetalert.min.js';
 
 import {EXIF} from "../node_modules/exif-es6/dist/exif-es6.js";
 

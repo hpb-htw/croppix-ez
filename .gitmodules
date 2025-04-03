@@ -1,0 +1,3 @@
+[submodule "croppix-ez-doc"]
+	path = croppix-ez-doc
+	url = git@github.com:hpb-htw/croppix-ez-doc.git

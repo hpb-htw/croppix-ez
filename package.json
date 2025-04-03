@@ -1,7 +1,7 @@
 {
-  "name": "easy-crop",
+  "name": "croppix-ez",
   "version": "3.0.0-beta",
-  "description": "A simple javascript image cropper",
+  "description": "Easily crop pictures",
   "type": "module",
   "files": [
     "lib",
@@ -14,8 +14,8 @@
     "test": "echo TEST",
     "build": "vite build",
     "build:demo": "vite build --config vite-demo.config.js; cp -r demo/img www",
-    "deploy": "echo DEPLOY",
-    "clean": "rm -rf dist cropie-es6-*.tgz"
+    "deploy": "npm pack; mv www croppix-ez-doc/",
+    "clean": "rm -rf dist www croppix-ez-*.tgz"
   },
   "repository": {
     "type": "git",

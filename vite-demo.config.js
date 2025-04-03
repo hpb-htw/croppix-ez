@@ -9,7 +9,7 @@ export default defineConfig({
     base:"./",
     mode: "production",
     build: {
-        outDir: "../www",
+        outDir: "../croppix-ez-doc",
         emptyOutDir: true
     }
 })

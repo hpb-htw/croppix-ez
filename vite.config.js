@@ -9,7 +9,7 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, 'lib/main.js'),
             name: 'easy-crop',
-            fileName: (format, name) => `easy-crop.${format}.js`,
+            fileName: (format, name) => `croppix-ez.${format}.js`,
             formats: ['es','umd'],
         },
         sourcemap: true,

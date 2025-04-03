@@ -13,8 +13,8 @@
     "dev": "echo DEV",
     "test": "echo TEST",
     "build": "vite build",
-    "build:demo": "vite build --config vite-demo.config.js; cp -r demo/img www",
-    "deploy": "npm pack; mv www croppix-ez-doc/",
+    "build:demo": "vite build --config vite-demo.config.js; cp -r demo/img demo/README.md www",
+    "deploy": "./deploy.sh",
     "clean": "rm -rf dist www croppix-ez-*.tgz"
   },
   "repository": {

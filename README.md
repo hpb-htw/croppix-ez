@@ -16,7 +16,7 @@ TODO
 ```html
 
 <link rel="stylesheet" href="lib/croppie.css"/>
-<script src="easy-crop.js" type="module"></script>
+<script src="croppix-ez.js" type="module"></script>
 ```
 
 ## CDN

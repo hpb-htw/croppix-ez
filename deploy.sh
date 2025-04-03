@@ -7,6 +7,7 @@ npm pack
 
 # deploy the document to github page
 DOC_REPO=croppix-ez-doc
+git -C ${DOC_REPO} checkout master
 git -C ${DOC_REPO} status .
 rm -rf ${DOC_REPO}/*
 cp -rfv www/* ${DOC_REPO}

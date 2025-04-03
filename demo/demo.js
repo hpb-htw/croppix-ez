@@ -1,15 +1,15 @@
-import {EasyCrop} from "../lib/easy-crop.js";
+import {CroppixEz} from "../lib/croppix-ez.js";
 import {$} from '../node_modules/jquery/dist-module/jquery.module.min.js';
 import '../node_modules/sweetalert/dist/sweetalert.min.js';
 
-import {EXIF} from "../node_modules/exif-es6/lib/exif-es6.js";
+import {EXIF} from "../node_modules/exif-es6/dist/exif-es6.js";
 
 window.EXIF = EXIF; // expose EXIF to global scope
 
 const JQUERY_BIND_NAME = 'croppie';
 
 if (typeof $ !== 'undefined') {
-    $.fn.crop = function (opts) {
+    $.fn.croppixez = function (opts) {
         const ot = typeof opts;
         if (ot === 'string') {
             const args = Array.prototype.slice.call(arguments, 1);
@@ -34,12 +34,12 @@ if (typeof $ !== 'undefined') {
                         $(this).removeData(JQUERY_BIND_NAME);
                     }
                 } else {
-                    throw 'Croppie ' + opts + ' method not found';
+                    throw 'CroppixEz ' + opts + ' method not found';
                 }
             });
         } else {
             return this.each(function () {
-                const i = new EasyCrop(this, opts);
+                const i = new CroppixEz(this, opts);
                 i.$ = $;
                 $(this).data(JQUERY_BIND_NAME, i);
             });
@@ -86,7 +86,7 @@ const Demo = (function () {
 
     function demoMain() {
         const mc = $('#cropper-1');
-        mc.croppie({
+        mc.croppixez({
             viewport: {
                 width: 150,
                 height: 150,
@@ -104,7 +104,7 @@ const Demo = (function () {
             // console.log('jquery update', ev, data);
         });
         $('.js-main-image').on('click', function (ev) {
-            mc.croppie('result', {
+            mc.croppixez('result', {
                 type: 'rawcanvas',
                 circle: true,
                 // size: { width: 300, height: 300 },
@@ -118,7 +118,7 @@ const Demo = (function () {
     }
 
     function demoBasic() {
-        const basic = $('#demo-basic').croppie({
+        const basic = $('#demo-basic').croppixez({
             viewport: {
                 width: 150,
                 height: 200
@@ -128,7 +128,7 @@ const Demo = (function () {
                 height: 300
             }
         });
-        basic.croppie('bind', {
+        basic.croppixez('bind', {
             url: './img/cat.jpg',
             points: [77,469,280,739]
         });
@@ -142,7 +142,7 @@ const Demo = (function () {
             if (w || h) {
                 size = { width: w, height: h };
             }
-            basic.croppie('result', {
+            basic.croppixez('result', {
                 type: 'canvas',
                 size: size,
                 resultSize: {
@@ -159,7 +159,7 @@ const Demo = (function () {
 
     function demoVanilla() {
         const vEl = document.getElementById('vanilla-demo'),
-            vanilla = new EasyCrop(vEl, {
+            vanilla = new CroppixEz(vEl, {
                 viewport: {width: 200, height: 100},
                 boundary: {width: 300, height: 300},
                 showZoomer: false,
@@ -190,7 +190,7 @@ const Demo = (function () {
 
     function demoResizer() {
         const vEl = document.getElementById('resizer-demo'),
-            resize = new EasyCrop(vEl, {
+            resize = new CroppixEz(vEl, {
                 viewport: {width: 100, height: 100},
                 boundary: {width: 300, height: 300},
                 showZoomer: false,
@@ -217,7 +217,7 @@ const Demo = (function () {
     }
 
     function demoUpload() {
-        const $uploadCrop = $('#upload-demo').croppie({
+        const $uploadCrop = $('#upload-demo').croppixez({
             viewport: {
                 width: 100,
                 height: 100,
@@ -233,7 +233,7 @@ const Demo = (function () {
 
                 reader.onload = function (e) {
                     $('.upload-demo').addClass('ready');
-                    $uploadCrop.croppie('bind', {
+                    $uploadCrop.croppixez('bind', {
                         url: e.target.result
                     }).then(function(){
                         console.log('jQuery bind complete');
@@ -249,7 +249,7 @@ const Demo = (function () {
 
         $('#upload').on('change', function () { readFile(this); });
         $('.upload-result').on('click', function (ev) {
-            $uploadCrop.croppie('result', {
+            $uploadCrop.croppixez('result', {
                 type: 'canvas',
                 size: 'viewport'
             }).then(function (resp) {
@@ -264,7 +264,7 @@ const Demo = (function () {
     function demoHidden() {
         const $hid = $('#hidden-demo');
 
-        $hid.croppie({
+        $hid.croppixez({
             viewport: {
                 width: 175,
                 height: 175,
@@ -275,10 +275,10 @@ const Demo = (function () {
                 height: 200
             }
         });
-        $hid.croppie('bind', './img/demo-3.jpg');
+        $hid.croppixez('bind', './img/demo-3.jpg');
         $('.show-hidden').on('click', function () {
             $hid.toggle();
-            $hid.croppie('bind');
+            $hid.croppixez('bind');
         });
     }
 

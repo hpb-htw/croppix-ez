@@ -32,7 +32,7 @@ deploy() {
     git -C ${DOC_REPO} checkout master
     git -C ${DOC_REPO} status .
     rm -rf ${DOC_REPO}/*
-    cp -rfv ${DEMO}/www/* ${DOC_REPO}
+    cp -rf ${DEMO}/www/* ${DOC_REPO}
     git -C ${DOC_REPO} add --all
     git -C ${DOC_REPO} commit -a -m "auto commit"
     git -C ${DOC_REPO} push origin master

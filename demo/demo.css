@@ -7,3 +7,10 @@
     --pico-font-size: 90%;
     --pico-spacing: 0.5rem;
 }
+
+/* set margin as height as margin of language-XXXX in prismjs */
+/* border-radius: 0.3em; could also be set, but it need background color */
+.demonstration {
+    margin-top: 0.5em;
+
+}

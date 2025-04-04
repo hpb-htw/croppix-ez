@@ -23,6 +23,10 @@ build_demo() {
     popd
 }
 
+commit_change() {
+  git commit -a -m "auto-commit $(date --iso-8601)"
+}
+
 # deploy the document to github page
 deploy() {
     git -C ${DOC_REPO} checkout master
@@ -34,6 +38,8 @@ deploy() {
     git -C ${DOC_REPO} push origin master
 }
 
-build
-build_demo
-deploy
+#install
+#build
+#build_demo
+commit_change
+#deploy

@@ -1,4 +1,4 @@
-import {CroppixEz} from "../lib/croppix-ez.js";
+import {CroppixEz} from "../dist/croppix-ez.es.js";
 import {$} from './node_modules/jquery/dist-module/jquery.module.min.js';
 import './node_modules/sweetalert/dist/sweetalert.min.js';
 

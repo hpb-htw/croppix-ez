@@ -30,7 +30,7 @@ function popupResult(result) {
     }, 1);
 }
 
-function demo1CropRectangle() {
+export function demo1CropRectangle() {
     // the container element for rending image
     const container = document.getElementById('demo1');
     const crop = new CroppixEz(container, {
@@ -51,7 +51,7 @@ function demo1CropRectangle() {
 }
 
 
-function demo2CropCircle() {
+export function demo2CropCircle() {
     const center = {x:350, y:396};
     const size = {w:200,h:180};
     const factor = 0.85;
@@ -82,5 +82,3 @@ function demo2CropCircle() {
     });
 }
 
-demo1CropRectangle();
-demo2CropCircle();

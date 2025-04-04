@@ -54,11 +54,13 @@ export function demo1CropRectangle() {
 export function demo2CropCircle() {
     const center = {x:350, y:396};
     const size = {w:200,h:180};
-    const factor = 0.85;
+    const imageSize = {w:992, h:745};
+    const factor = 0.5;
+    const boundary = {width:imageSize.w*factor, height:imageSize.h*factor};
     const container = document.getElementById("demo2");
     const crop = new CroppixEz(container, {
         viewport: {width: 100, height: 100, type: 'circle'},
-        boundary: {width: factor*992, height: factor*745},
+        boundary: boundary,
         showZoomer: false
     });
     const points = [

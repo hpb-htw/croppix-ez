@@ -16,7 +16,14 @@
 }
 
 html {
+    width  : 100%;
+    overflow: hidden;
+    position: relative;
     overscroll-behavior:none;
 }
-
+body {
+    width  : 100%;
+    overflow: auto;
+    position: relative;
+}
 

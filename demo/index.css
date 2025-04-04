@@ -12,11 +12,12 @@
 /* border-radius: 0.3em; could also be set, but it need background color */
 .demonstration {
     margin-top: 0.5em;
-
 }
 
 html {
     width  : 100%;
+    border:0;
+    margin:0;
     overflow-x: hidden;
     position: relative;
     overscroll-behavior-x:none;

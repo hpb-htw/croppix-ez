@@ -1,8 +1,10 @@
-import {demo1CropRectangle, demo2CropCircle} from './croppixez-demo.js';
+import {demoCropRectangle, demoCropCircle, demoCropImgDom, demoAdjustableCropWindow} from './croppixez-demo.js';
 
 function runDemo() {
-    demo1CropRectangle();
-    demo2CropCircle();
+    demoCropRectangle();
+    demoCropCircle();
+    demoCropImgDom();
+    demoAdjustableCropWindow();
 }
 
 async function showDemoCode() {
@@ -87,7 +89,7 @@ function parseElId(line) {
     line = line.trim();
     const EL_ID_INDICATOR = '// tag:';
     if(line.startsWith(EL_ID_INDICATOR)) {
-        return line.slice(EL_ID_INDICATOR.length);
+        return line.slice(EL_ID_INDICATOR.length).trim();
     }
     throw new Error(`'${line}' not started with ${EL_ID_INDICATOR}`);
 }
@@ -99,13 +101,17 @@ function parseElId(line) {
  * */
 function showExampleCode({js, html, elId}) {
     const el = document.getElementById(elId);
-    const jsContainer = el.querySelector('code[class="language-javascript"]');
-    const htmlContainer = el.querySelector('code[class="language-html"]');
-    jsContainer.textContent = js;
-    htmlContainer.textContent = html;
-    if(window.Prism) {
-        window.Prism.highlightElement(jsContainer);
-        window.Prism.highlightElement(htmlContainer);
+    if(el) {
+        const jsContainer = el.querySelector('code[class="language-javascript"]');
+        const htmlContainer = el.querySelector('code[class="language-html"]');
+        jsContainer.textContent = js;
+        htmlContainer.textContent = html;
+        if (window.Prism) {
+            window.Prism.highlightElement(jsContainer);
+            window.Prism.highlightElement(htmlContainer);
+        }
+    }else {
+        throw new Error(`Container element with id='${elId}' not found`);
     }
 }
 

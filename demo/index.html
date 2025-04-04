@@ -15,15 +15,29 @@
         Croppix Ez – Crop pictures easily
     </h1>
     <nav>
-        <span>A library to crop images in JavaScript | ported from library Croppie in ES-6 module</span>
-        <span>Hier kommt eine drop-down Menu zu dem jeweiligen Beispiele</span>
-        <a href="#install">Install</a>
-        <a href="#api">API</a>
-        <a href="https://todo.notdonenow" target="_blank">Source Code</a>
+        <ul>
+            <li>A library to crop images in JavaScript | ported from library Croppie in ES-6 module</li>
+        </ul>
+        <ul>
+            <li>
+                <details class="dropdown">
+                    <summary>Examples</summary>
+                    <ul>
+                        <li><a href="#crop-image-url">Crop image from URL</a></li>
+                        <li><a href="#crop-image-el">Crop image from DOM</a></li>
+                        <li><a href="#adjustable-crop-window">Adjustable crop window</a></li>
+                        <li><a href="#circle-crop">Circle Crop</a></li>
+                    </ul>
+                </details>
+            </li>
+            <li><a href="#install">Install</a></li>
+            <li><a href="#api">API</a></li>
+            <li><a href="https://github.com/hpb-htw/croppix-ez" target="_blank">Source</a></li>
+        </ul>
     </nav>
 </header>
-<main class="container-fluid">
-    <section>
+<main class="container">
+    <section id="crop-image-url">
         <h2>Crop image from url</h2>
         <div class="grid">
             <div id="demo-basic">
@@ -39,31 +53,40 @@
         </div>
     </section>
 
-    <section>
+    <section id="crop-image-el">
         <h2>Crop image from an &lt;img&gt;-Tag</h2>
-        TODO
+
         <div class="grid">
-            <div>
+            <div id="demo-image-dom-listing">
                 <pre><code class="language-javascript"></code></pre>
                 <pre><code class="language-html"></code></pre>
+                <button id="image-dom-btn">Get Result</button>
             </div>
-            <div></div>
+            <div class="demonstration">
+                <img id="img-peacock.jpg" src="img/peacock.jpg" style="display:none" alt="">
+            </div>
         </div>
     </section>
 
-    <section>
+    <section id="adjustable-crop-window">
         <h2>Adjustable crop window</h2>
-        TODO
         <div class="grid">
-            <div>
+            <div id="adjustable-crop-window-listing">
                 <pre><code class="language-javascript"></code></pre>
                 <pre><code class="language-html"></code></pre>
+                <fieldset role="group">
+                    <input id="adjustable-size-width" type="number" placeholder="width" />
+                    <input id="adjustable-size-height" type="number" placeholder="height" />
+                    <input id="adjustable-result-btn" type="button" value="Get Result"/>
+                </fieldset>
             </div>
-            <div></div>
+            <div class="demonstration">
+                <div id="adjustable-demo"></div>
+            </div>
         </div>
     </section>
 
-    <section>
+    <section id="circle-crop">
         <h2>Circle crop</h2>
         <div class="grid">
             <div id="demo-circle-crop">
@@ -84,17 +107,26 @@
 
 
 
-    <section>
+    <section id="rotate">
         <h2>Rotate image</h2>
     </section>
-    <section>
+    <section id="horizontal-resizer">
         <h2>Horizontal Resize Bar</h2>
     </section>
-    <section>
+    <section id="vertical-resizer">
         <h2>Vertical Resize Bar</h2>
     </section>
-    <section>
+    <section id="bind-jquery">
         <h2>Bind as JQuery Plugin</h2>
+    </section>
+
+    <section id="install">
+        <h2>Install</h2>
+        For now: use source in github
+    </section>
+    <section id="api">
+        <h2>API</h2>
+        TODO
     </section>
 </main>
 

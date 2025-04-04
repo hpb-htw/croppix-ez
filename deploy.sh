@@ -38,8 +38,8 @@ deploy() {
     git -C ${DOC_REPO} push origin master
 }
 
-#install
-#build
-#build_demo
+install
+build
+build_demo
 commit_change
-#deploy
+deploy

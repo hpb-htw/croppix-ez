@@ -25,6 +25,7 @@ build_demo() {
 
 commit_change() {
   git commit -a -m "auto-commit $(date --iso-8601)"
+  git push origin master
 }
 
 # deploy the document to github page

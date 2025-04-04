@@ -31,6 +31,7 @@ function popupResult(result) {
 }
 
 export function demo1CropRectangle() {
+    // tag:demo-basic
     // the container element for rending image
     // <div id="demo1"></div>
     const container = document.getElementById('demo1');
@@ -58,6 +59,7 @@ export function demo1CropRectangle() {
 
 
 export function demo2CropCircle() {
+    // tag:demo-circle-crop
     const center = {x:350, y:396};
     const size = {w:200,h:180};
     const imageSize = {w:992, h:745};

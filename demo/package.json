@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf www",
     "dev": "npx vite",
-    "build": "npx vite build; cp -r img README.md www"
+    "build": "npx vite build; cp -r img README.md croppixez-demo.js www"
   },
   "author": "",
   "license": "MIT",

@@ -1,4 +1,4 @@
-/*@import url(./node_modules/@picocss/pico/css/pico.cyan.css);*/
+@import url(./node_modules/@picocss/pico/css/pico.cyan.css);
 @import url(./node_modules/prismjs/themes/prism-solarizedlight.css);
 /*@import url(./node_modules/sweetalert/dist/sweetalert.css);*/
 @import url(../lib/croppix-ez.css);

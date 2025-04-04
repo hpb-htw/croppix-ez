@@ -32,6 +32,7 @@ function popupResult(result) {
 
 export function demo1CropRectangle() {
     // the container element for rending image
+    // <div id="demo1"></div>
     const container = document.getElementById('demo1');
     const crop = new CroppixEz(container, {
             viewport: {width: 300, height: 300},
@@ -40,13 +41,18 @@ export function demo1CropRectangle() {
             enableOrientation: true
         });
     crop.bind({
-        url: './img/cat.jpg', // path to image file on server
-        orientation: 4,       // rotate image upside-down (s. reference for more)
-        zoom: 0               // initialize the size of the image to the size of the viewport
+        // path to image file on server
+        url: './img/cat.jpg',
+        // rotate image upside-down (s. reference for more)
+        orientation: 4,
+        // initialize the size of the image to the size of the viewport
+        zoom: 0
     });
-    document.getElementById("demo1-btn").addEventListener('click', async (ev) => {
-        const blob = await crop.result({type: 'blob'});
-        popupResult({src:window.URL.createObjectURL(blob)});
+    // <button id="demo1-btn">Get Result</button>
+    document.getElementById("demo1-btn")
+        .addEventListener('click', async (ev) => {
+            const blob = await crop.result({type: 'blob'});
+            popupResult({src:window.URL.createObjectURL(blob)});
     });
 }
 
@@ -57,6 +63,7 @@ export function demo2CropCircle() {
     const imageSize = {w:992, h:745};
     const factor = 0.5;
     const boundary = {width:imageSize.w*factor, height:imageSize.h*factor};
+    // <div id="demo2"></div>
     const container = document.getElementById("demo2");
     const crop = new CroppixEz(container, {
         viewport: {width: 100, height: 100, type: 'circle'},
@@ -74,13 +81,16 @@ export function demo2CropCircle() {
         points
     });
     // update zoom
+    // <span id="demo2-zoom"></span>
     const zoom = document.getElementById('demo2-zoom');
     container.addEventListener('update', (ev)=>{
         zoom.textContent = `Zoom: ${ev.detail.zoom.toFixed(4)}`;
     });
-    document.getElementById('demo2-btn').addEventListener('click', async (ev) => {
-        const blob = await crop.result({type: 'canvas'});
-        popupResult({src:blob});
+    // <button id="demo2-btn">get Result</button>
+    document.getElementById('demo2-btn')
+        .addEventListener('click', async (ev) => {
+            const blob = await crop.result({type: 'canvas'});
+            popupResult({src:blob});
     });
 }
 

@@ -10,67 +10,80 @@
 </head>
 <body>
 <header>
-    <h1>Croppix Ez – Crop and resize picture easily</h1>
-    A library to crop and resize images in JavaScript | ported from library Croppie to ES-6 module
+    <h1>
+        <img width="48px" src="./croppie-favicon.svg">
+        Croppix Ez – Crop pictures easily
+    </h1>
+    <nav>
+        <span>A library to crop images in JavaScript | ported from library Croppie in ES-6 module</span>
+        <span>Hier kommt eine drop-down Menu zu dem jeweiligen Beispiele</span>
+        <a href="#install">Install</a>
+        <a href="#api">API</a>
+        <a href="https://todo.notdonenow" target="_blank">Source Code</a>
+    </nav>
 </header>
 <main class="container-fluid">
     <section>
-        <h2>8. Crop image from an img-tag</h2>
+        <h2>Crop image from url</h2>
         <div class="grid">
-            <div>
-                <pre class="language-javascript"><code>/* JavaScript */
-// the container element for rending image
-const container = document.getElementById('demo1');
-const crop = new CroppixEz(container, {
-    // size of the crop window
-    viewport: {width: 300, height: 300},
-    // size reserved to show image
-    boundary: {width: 500, height: 500},
-    // don't show zoom bar
-    showZoomer: false,
-    // allow to change the orientation (rotated)
-    enableOrientation: true
-});
-crop.bind({
-    url: './img/cat.jpg', // path to image file on server
-    orientation: 4,       // rotate image upside-down (s. reference for more)
-    zoom: 0               // initialize the size of the image to the size of the viewport
-});
-document.getElementById("demo1-btn").addEventListener('click', async (ev) => {
-    const blob = await crop.result({type: 'blob'});
-    popupResult({
-        src:window.URL.createObjectURL(blob)
-    });
-});</code></pre>
-                <pre class="language-html"><code>&lt;!-- HTML -->
-&lt;div id="demo1">&lt;/div>
-&lt;button id="demo1-btn">&lt;button></code></pre>
-                <button id="demo1-btn">Get result</button>
+            <div id="demo1-listing">
+                <pre><code class="language-javascript"></code></pre>
+                <pre><code class="language-html"></code></pre>
             </div>
             <div>
-                <div id="demo1" class="demonstration"></div>
+                <div class="demonstration">
+                    <div id="demo1"></div>
+                    <button id="demo1-btn">Get result</button>
+                </div>
             </div>
         </div>
     </section>
+
     <section>
-        <h2>Circle crop an image</h2>
+        <h2>Crop image from an &lt;img&gt;-Tag</h2>
+        TODO
         <div class="grid">
             <div>
-<pre class="language-javascript"><code>/*JavaScript*/
-
-</code></pre>
-<pre class="language-html"><code>
-
-</code></pre>
-            <button id="demo2-btn">Get Result</button>
-            <span id="demo2-zoom">Zoom:</span>
+                <pre><code class="language-javascript"></code></pre>
+                <pre><code class="language-html"></code></pre>
             </div>
+            <div></div>
+        </div>
+    </section>
 
-            <div><!-- result -->
-                <div id="demo2"></div>
+    <section>
+        <h2>Adjustable crop window</h2>
+        TODO
+        <div class="grid">
+            <div>
+                <pre><code class="language-javascript"></code></pre>
+                <pre><code class="language-html"></code></pre>
+            </div>
+            <div></div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Circle crop</h2>
+        <div class="grid">
+            <div id="demo-circle-crop">
+                <pre><code class="language-javascript"></code></pre>
+                <pre><code class="language-html"></code></pre>
+            </div>
+            <div>
+                <div class="demonstration">
+                    <div id="demo2"></div>
+                    <span>
+                        <button id="demo2-btn">Get Result</button>
+                        <span id="demo2-zoom">Zoom:</span>
+                    </span>
+                </div>
             </div>
         </div>
     </section>
+
+
+
     <section>
         <h2>Rotate image</h2>
     </section>
@@ -85,7 +98,9 @@ document.getElementById("demo1-btn").addEventListener('click', async (ev) => {
     </section>
 </main>
 
-<script src="./node_modules/prismjs/prism.js" type="module"></script>
+
 <script type="module" src="index.js"></script>
+<!-- Load prism.js after main to get syntax highlight automatically -->
+<script src="./node_modules/prismjs/prism.js" type="module"></script>
 </body>
 </html>

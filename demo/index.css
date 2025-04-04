@@ -17,14 +17,14 @@
 
 html {
     width  : 100%;
-    overflow: hidden;
+    overflow-x: hidden;
     position: relative;
-    overscroll-behavior:none;
+    overscroll-behavior-x:none;
 }
 body {
     width  : 100%;
-    overflow: auto;
+    overflow-x: auto;
     position: relative;
-    overscroll-behavior:none;
+    overscroll-behavior-x:none;
 }
 

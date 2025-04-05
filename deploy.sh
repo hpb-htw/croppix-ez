@@ -24,7 +24,7 @@ build_demo() {
 }
 
 commit_change() {
-  git commit -a -m "auto-commit $(date --iso-8601)"
+  git commit -a -m "auto-commit $(date +"%Y-%m-%dT%H:%M:%S%:z")"
   git push origin master
 }
 

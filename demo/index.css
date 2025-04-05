@@ -1,5 +1,6 @@
 @import url(./node_modules/@picocss/pico/css/pico.cyan.css);
-@import url(./node_modules/prismjs/themes/prism-solarizedlight.css);
+/*@import url(./node_modules/prismjs/themes/prism-solarizedlight.css);*/
+@import url(./node_modules/highlight.js/styles/googlecode.css);
 @import url(./node_modules/sweetalert/dist/sweetalert.css);
 @import url(../dist/croppix-ez.css);
 
@@ -30,11 +31,9 @@ body {
 /* set margin as height as margin of language-XXXX in prismjs */
 /* border-radius: 0.3em; could also be set, but it need background color */
 .demonstration {
-    margin-top: 0.5em;
     display: grid;
 }
 
-.token.comment {
-    /* Comments are there to be read, so they have to be red */
-    color: rgba(180, 0, 31, 0.78)
+code {
+    color: #121212;
 }

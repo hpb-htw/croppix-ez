@@ -1,4 +1,7 @@
 import {demoCropRectangle, demoCropCircle, demoCropImgDom, demoAdjustableCropWindow} from './croppixez-demo.js';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+hljs.registerLanguage('javascript', javascript);
 
 function runDemo() {
     demoCropRectangle();
@@ -104,12 +107,8 @@ function showExampleCode({js, html, elId}) {
     if(el) {
         const jsContainer = el.querySelector('code[class="language-javascript"]');
         const htmlContainer = el.querySelector('code[class="language-html"]');
-        jsContainer.textContent = js;
-        htmlContainer.textContent = html;
-        if (window.Prism) {
-            window.Prism.highlightElement(jsContainer);
-            window.Prism.highlightElement(htmlContainer);
-        }
+        jsContainer.innerHTML = hljs.highlight(js, {language: 'javascript', ignoreIllegals: true}).value;
+        htmlContainer.innerHTML = hljs.highlight(html, {language: 'javascript', ignoreIllegals: true}).value;
     }else {
         throw new Error(`Container element with id='${elId}' not found`);
     }

@@ -39,6 +39,11 @@ deploy() {
     git -C ${DOC_REPO} push origin master
 }
 
+publish() {
+  cat npmrc.template > .npmrc
+  npm publish
+}
+
 install
 build
 build_demo

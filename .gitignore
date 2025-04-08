@@ -5,4 +5,6 @@ bower_components
 /nbproject/private/
 dist/
 www/
-croppix-ez-3.0.0-beta.tgz
+croppix-ez-*.tgz
+.npmrc
+

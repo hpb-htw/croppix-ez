@@ -40,7 +40,7 @@ deploy() {
 }
 
 publish() {
-  cat npmrc.template > .npmrc
+  cp npmrc.template .npmrc
   npm publish
 }
 

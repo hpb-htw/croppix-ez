@@ -1,12 +1,16 @@
-@import url(./node_modules/@picocss/pico/css/pico.cyan.css);
-/*@import url(./node_modules/prismjs/themes/prism-solarizedlight.css);*/
-@import url(./node_modules/highlight.js/styles/googlecode.css);
+@import url(./node_modules/@picocss/pico/css/pico.grey.css);
+@import url(./node_modules/highlight.js/styles/stackoverflow-light.css);
 @import url(./node_modules/sweetalert/dist/sweetalert.css);
 @import url(../dist/croppix-ez.css);
 
 :root {
-    --pico-font-size: 90%;
+    --pico-font-size: 95%;
     --pico-spacing: 0.5rem;
+}
+
+a[target="_blank"]:after {
+    content: " ↗";
+    font-family: system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, Helvetica, Arial, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 /* this rule prevent iPad Safari to bounce the page horizontally */
@@ -32,8 +36,17 @@ body {
 /* border-radius: 0.3em; could also be set, but it need background color */
 .demonstration {
     display: grid;
+    row-gap:10px;
 }
 
 code {
     color: #121212;
+}
+
+.hljs-comment {
+    color: rgb(200, 49, 85)
+}
+
+.hljs-keyword {
+    font-weight: bold;
 }

@@ -46,8 +46,8 @@ export function demoCropRectangle() {
         url: './img/cat.jpg',
         // rotate image upside-down (s. reference for more)
         orientation: 4,
-        // initialize the size of the image to the size of the viewport
-        zoom: 1
+        // zoom 0 set the size of the image to the size of the viewport
+        zoom: 0
     });
     // <button id="demo1-btn">Get Result</button>
     document.getElementById("demo1-btn")

@@ -13,7 +13,6 @@
     "dev": "echo DEV",
     "test": "echo TEST",
     "build": "vite build",
-    "build:demo": "vite build --config vite-demo.config.js; cp -r demo/img demo/README.md www",
     "deploy": "./deploy.sh",
     "clean": "rm -rf dist www croppix-ez-*.tgz"
   },
@@ -41,6 +40,6 @@
     "vite": "6.2.4"
   },
   "optionalDependencies": {
-    "exif-es6": "0.0.1"
+    "exif-esm": "1.0.0"
   }
 }

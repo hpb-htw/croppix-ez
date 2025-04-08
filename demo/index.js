@@ -2,9 +2,11 @@ import {demoCropRectangle, demoCropCircle, demoCropImgDom, demoAdjustableCropWin
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import html from 'highlight.js/lib/languages/xml';
+import bash from 'highlight.js/lib/languages/bash';
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('html', html);
+hljs.registerLanguage('bash', bash);
 
 function runDemo() {
     demoCropRectangle();
@@ -106,12 +108,18 @@ function parseElId(line) {
  * @param {string} elId
  * */
 function showExampleCode({js, html, elId}) {
+    const JS_EXAMPLE_EL_QUERY = 'code[class*="example-javascript"]';
+    const HTML_EXAMPLE_EL_QUERY = 'code[class*="example-html"]';
     const el = document.getElementById(elId);
     if(el) {
-        const jsContainer = el.querySelector('code[class="language-javascript"]');
-        const htmlContainer = el.querySelector('code[class="language-html"]');
-        jsContainer.innerHTML = hljs.highlight(js, {language: 'javascript', ignoreIllegals: true}).value;
-        htmlContainer.innerHTML = hljs.highlight(html, {language: 'html', ignoreIllegals: true}).value;
+        try {
+            const jsContainer = el.querySelector(JS_EXAMPLE_EL_QUERY);
+            const htmlContainer = el.querySelector(HTML_EXAMPLE_EL_QUERY);
+            jsContainer.innerHTML = hljs.highlight(js, {language: 'javascript', ignoreIllegals: true}).value;
+            htmlContainer.innerHTML = hljs.highlight(html, {language: 'html', ignoreIllegals: true}).value;
+        }catch (e) {
+            throw new Error(`Container id ${elId} does not contain ${JS_EXAMPLE_EL_QUERY} or ${HTML_EXAMPLE_EL_QUERY}`);
+        }
     }else {
         throw new Error(`Container element with id='${elId}' not found`);
     }
@@ -124,4 +132,5 @@ document.addEventListener("DOMContentLoaded", () => {
     }catch (e) {
         console.error(e);
     }
+    hljs.highlightAll();
 });

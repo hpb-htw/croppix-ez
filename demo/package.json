@@ -16,6 +16,6 @@
     "jquery": "4.0.0-beta.2",
     "prismjs": "1.30.0",
     "sweetalert": "1.1.3",
-    "vite": "6.2.4"
+    "vite": "6.2.6"
   }
 }

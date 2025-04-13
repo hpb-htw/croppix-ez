@@ -30,10 +30,10 @@ function popupResult(result) {
     }, 1);
 }
 
+// tag:demo-basic
 export function demoCropRectangle() {
-    // tag:demo-basic
-    // the container element for rending image
     // <div id="demo1"></div>
+    // the container element for rending image
     const container = document.getElementById('demo1');
     const crop = new CroppixEz(container, {
             viewport: {width: 300, height: 300},
@@ -57,8 +57,8 @@ export function demoCropRectangle() {
     });
 }
 
+// tag:demo-circle-crop
 export function demoCropCircle() {
-    // tag:demo-circle-crop
     const center = {x:350, y:396};
     const size = {w:200,h:180};
     const imageSize = {w:992, h:745};
@@ -95,8 +95,8 @@ export function demoCropCircle() {
     });
 }
 
+// tag: demo-image-dom-listing
 export function demoCropImgDom() {
-    // tag: demo-image-dom-listing
     // <img id="img-peacock.jpg" src="img/peacock.jpg">
     const img = document.getElementById('img-peacock.jpg');
     const crop = new CroppixEz(img,{
@@ -112,8 +112,8 @@ export function demoCropImgDom() {
         });
 }
 
+// tag: adjustable-crop-window-listing
 export function demoAdjustableCropWindow() {
-    // tag: adjustable-crop-window-listing
     // <div id="adjustable-demo"></div>
     const container = document.getElementById("adjustable-demo");
     const crop = new CroppixEz(container, {

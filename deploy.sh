@@ -49,4 +49,4 @@ build
 build_demo
 commit_change
 deploy
-publish
+#publish

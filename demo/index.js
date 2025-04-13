@@ -1,12 +1,20 @@
 import {demoCropRectangle, demoCropCircle, demoCropImgDom, demoAdjustableCropWindow} from './croppixez-demo.js';
+import {showExampleCode, parseExampleFunctions} from "./node_modules/zmdc/dist/zmdc.js";
+
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import html from 'highlight.js/lib/languages/xml';
 import bash from 'highlight.js/lib/languages/bash';
-
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('html', html);
 hljs.registerLanguage('bash', bash);
+
+document.addEventListener("DOMContentLoaded", async () => {
+    runDemo();
+    const demoScript = './croppixez-demo.js';
+    await showDemoCode(demoScript);
+    hljs.highlightAll();
+});
 
 function runDemo() {
     demoCropRectangle();
@@ -15,122 +23,11 @@ function runDemo() {
     demoAdjustableCropWindow();
 }
 
-async function showDemoCode() {
-    const DEMO_SCRIPT = './croppixez-demo.js';
-    const response = await fetch(DEMO_SCRIPT, {method: 'GET'});
+async function showDemoCode(demoScript) {
+    const response = await fetch(demoScript, {method: 'GET'});
     const text = await response.text();
-    const demoExamples = parseText(text);
-    for(const example of demoExamples) {
+    const demoExamples = parseExampleFunctions(text);
+    for (const example of demoExamples) {
         showExampleCode(example);
     }
 }
-
-/**
- * @param {string} text
- * */
-function parseText(text) {
-    const example = [];
-    let functionLines = [];
-    const DEMO_INDICATOR = 'export function demo';
-    const state = {
-        inFunction: false,
-        openCurly: 0,
-        closeCurly: 0
-    };
-    for (const line of text.split('\n')) {
-        if(line.startsWith(DEMO_INDICATOR)) {
-            // recognize a new demo function
-            state.inFunction = true;
-        }
-        if(state.inFunction) {
-            functionLines.push(line);
-            const {openCurly, closeCurly} = countCurly(line);
-            state.openCurly += openCurly;
-            state.closeCurly += closeCurly;
-            if (state.openCurly === state.closeCurly) {
-                // reset state
-                console.log(state)
-                state.inFunction = false;
-                state.openCurly = 0;
-                state.closeCurly = 0;
-                example.push( parseCode(functionLines) );
-                functionLines = []
-            }
-        }
-    }
-    return example;
-}
-
-function countCurly(line) {
-    const length = line.length;
-    const openCurly = length - (line.replaceAll('{','').length);
-    const closeCurly = length - (line.replaceAll('}','').length);
-    return {openCurly, closeCurly};
-}
-
-
-function parseCode(functionLines) {
-    const HTML_INDICATOR = '// <';
-    const FUNCTION_INDENT_SIZE = 4;
-
-    const js = [];
-    const html = [];
-    const functionBodyLines = functionLines.slice(2, -1);
-    if(functionBodyLines.length === 0) {
-        js.push('/* function is minified */');
-        html.push('<!-- function is minified -->')
-    }
-    for(const line of functionBodyLines ) {
-        const chars = line.trim();
-        if (chars.startsWith(HTML_INDICATOR) ) {
-            html.push(chars.slice(HTML_INDICATOR.length-1));
-        }else {
-            js.push(line.slice(FUNCTION_INDENT_SIZE).trimEnd());
-        }
-    }
-    const elId = parseElId(functionLines[1]);
-    return {js: js.join('\n'), html: html.join('\n'), elId};
-}
-
-
-function parseElId(line) {
-    line = line.trim();
-    const EL_ID_INDICATOR = '// tag:';
-    if(line.startsWith(EL_ID_INDICATOR)) {
-        return line.slice(EL_ID_INDICATOR.length).trim();
-    }
-    throw new Error(`'${line}' not started with ${EL_ID_INDICATOR}`);
-}
-
-/**
- * @param {string} jsCode
- * @param {string} html
- * @param {string} elId
- * */
-function showExampleCode({js, html, elId}) {
-    const JS_EXAMPLE_EL_QUERY = 'code[class*="example-javascript"]';
-    const HTML_EXAMPLE_EL_QUERY = 'code[class*="example-html"]';
-    const el = document.getElementById(elId);
-    if(el) {
-        try {
-            const jsContainer = el.querySelector(JS_EXAMPLE_EL_QUERY);
-            const htmlContainer = el.querySelector(HTML_EXAMPLE_EL_QUERY);
-            jsContainer.innerHTML = hljs.highlight(js, {language: 'javascript', ignoreIllegals: true}).value;
-            htmlContainer.innerHTML = hljs.highlight(html, {language: 'html', ignoreIllegals: true}).value;
-        }catch (e) {
-            throw new Error(`Container id ${elId} does not contain ${JS_EXAMPLE_EL_QUERY} or ${HTML_EXAMPLE_EL_QUERY}`);
-        }
-    }else {
-        throw new Error(`Container element with id='${elId}' not found`);
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    runDemo();
-    try {
-        showDemoCode();
-    }catch (e) {
-        console.error(e);
-    }
-    hljs.highlightAll();
-});

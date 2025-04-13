@@ -41,5 +41,8 @@
   },
   "optionalDependencies": {
     "exif-esm": "1.0.1"
+  },
+  "dependencies": {
+    "zmdc": "^3.0.0"
   }
 }

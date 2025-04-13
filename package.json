@@ -1,6 +1,6 @@
 {
   "name": "croppix-ez",
-  "version": "3.0.0-beta-0",
+  "version": "3.0.0-beta-1",
   "description": "Easily crop pictures",
   "type": "module",
   "files": [
@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://hpb-htw.github.io/croppix-ez/issues"
   },
-  "homepage": "https://hpb-htw.github.io/croppix-ez-es6",
+  "homepage": "https://hpb-htw.github.io/croppix-ez-doc",
   "devDependencies": {
     "vite": "6.2.6"
   },

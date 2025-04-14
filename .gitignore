@@ -7,4 +7,4 @@ dist/
 www/
 croppix-ez-*.tgz
 .npmrc
-
+coverage

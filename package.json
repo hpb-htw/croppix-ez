@@ -1,6 +1,6 @@
 {
   "name": "croppix-ez",
-  "version": "3.0.0-beta-2",
+  "version": "3.0.0-beta-3",
   "description": "Easily crop pictures",
   "type": "module",
   "files": [
@@ -11,10 +11,10 @@
   "module": "dist/easy-crop-es6.js",
   "scripts": {
     "dev": "echo DEV",
-    "test": "echo TEST",
+    "test": "npx karma start karma.conf.cjs",
     "build": "vite build",
     "deploy": "./deploy.sh",
-    "clean": "rm -rf dist www croppix-ez-*.tgz"
+    "clean": "rm -rf dist croppix-ez-*.tgz"
   },
   "repository": {
     "type": "git",
@@ -37,12 +37,18 @@
   },
   "homepage": "https://hpb-htw.github.io/croppix-ez-doc",
   "devDependencies": {
+    "@types/qunit": "2.19.12",
+    "karma": "6.4.4",
+    "karma-chrome-launcher": "3.2.0",
+    "karma-coverage": "2.2.1",
+    "karma-qunit": "4.2.1",
+    "qunit": "2.24.1",
     "vite": "6.2.6"
   },
   "optionalDependencies": {
     "exif-esm": "1.0.1"
   },
   "dependencies": {
-    "zmdc": "^3.0.0"
+    "zmdc": "3.0.0"
   }
 }

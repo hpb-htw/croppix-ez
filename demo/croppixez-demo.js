@@ -31,7 +31,7 @@ function popupResult(result) {
 }
 
 // tag:demo-basic
-export function demoCropRectangle() {
+export async function demoCropRectangle() {
     // <div id="demo1"></div>
     // the container element for rending image
     const container = document.getElementById('demo1');
@@ -41,7 +41,7 @@ export function demoCropRectangle() {
             showZoomer: false,
             enableOrientation: true
         });
-    crop.bind({
+    await crop.bind({
         // path to image file on server
         url: './img/cat.jpg',
         // rotate image upside-down (s. reference for more)
@@ -58,7 +58,7 @@ export function demoCropRectangle() {
 }
 
 // tag:demo-circle-crop
-export function demoCropCircle() {
+export async function demoCropCircle() {
     const center = {x:350, y:396};
     const size = {w:200,h:180};
     const imageSize = {w:992, h:745};
@@ -77,7 +77,7 @@ export function demoCropCircle() {
         center.x + size.w/2,
         center.y + size.h/2
     ];
-    crop.bind({
+    await crop.bind({
         url: 'img/jaguar.jpg',
         points
     });
@@ -113,7 +113,7 @@ export function demoCropImgDom() {
 }
 
 // tag: adjustable-crop-window-listing
-export function demoAdjustableCropWindow() {
+export async function demoAdjustableCropWindow() {
     // <div id="adjustable-demo"></div>
     const container = document.getElementById("adjustable-demo");
     const crop = new CroppixEz(container, {
@@ -122,7 +122,7 @@ export function demoAdjustableCropWindow() {
         showZoomer: false,
         enableResize: true
     });
-    crop.bind({
+    await crop.bind({
         url: './img/peacock.jpg',
         zoom: 0
     });

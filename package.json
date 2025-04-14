@@ -14,7 +14,7 @@
     "test": "npx karma start karma.conf.cjs",
     "build": "vite build",
     "deploy": "./deploy.sh",
-    "clean": "rm -rf dist croppix-ez-*.tgz"
+    "clean": "rm -rf dist coverage croppix-ez-*.tgz"
   },
   "repository": {
     "type": "git",

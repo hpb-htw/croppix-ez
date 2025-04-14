@@ -45,7 +45,14 @@ module.exports = function(config) {
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
     reporters: ['progress', 'coverage'],
 
-
+    coverageReporter: {
+      dir: "coverage",
+      subdir: function (browser) {
+        // normalization process to keep a consistent browser name across different
+        // OS
+        return browser.toLowerCase().split(/[ /-]/)[0];
+      },
+    },
     // web server port
     port: 9876,
 

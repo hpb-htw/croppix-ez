@@ -23,6 +23,11 @@ build_demo() {
     popd
 }
 
+
+test() {
+    npm run test
+}
+
 commit_change() {
   git commit -a -m "auto-commit $(date +"%Y-%m-%dT%H:%M:%S%:z")"
   git push origin master
@@ -47,6 +52,7 @@ publish() {
 
 install
 build
+test
 build_demo
 commit_change
 deploy

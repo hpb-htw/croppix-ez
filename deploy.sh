@@ -34,6 +34,7 @@ deploy() {
     git -C ${DOC_REPO} status .
     rm -rf ${DOC_REPO}/*
     cp -rf ${DEMO}/www/* ${DOC_REPO}
+    cp -rf coverage ${DOC_REPO}
     git -C ${DOC_REPO} add --all
     git -C ${DOC_REPO} commit -a -m "auto commit"
     git -C ${DOC_REPO} push origin master
@@ -49,4 +50,4 @@ build
 build_demo
 commit_change
 deploy
-publish
+#publish
